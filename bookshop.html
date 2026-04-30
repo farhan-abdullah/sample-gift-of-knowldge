@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Shop Portal — জ্ঞানের উপহার</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --g: #1a4d3a; --g2: #2e7d52; --gold: #c9a84c;
+      --bg: #f4f6f8; --surface: #fff;
+      --border: #e5e9ee; --text: #1a2332; --muted: #6b7a8d;
+      --ordered: #2563eb; --dispatched: #f59e0b; --delivered: #10b981;
+    }
+    html, body { height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+    *, input, select, textarea, button { font-family: inherit; }
+    button { cursor: pointer; }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* Layout */
+    .topbar { background: var(--g); color: #fff; height: 58px; display: flex; align-items: center; padding: 0 28px; gap: 14px; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+    .content { max-width: 1200px; margin: 0 auto; padding: 28px 24px; }
+
+    /* Login */
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--g); }
+
+    /* Cards */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; }
+    .btn-primary { background: var(--g); color: #fff; }
+    .btn-primary:hover { background: var(--g2); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); }
+    .btn-sm { padding: 6px 13px; font-size: 12px; }
+
+    /* Form */
+    .form-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .form-input { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; }
+    .form-input:focus { outline: none; border-color: var(--g); box-shadow: 0 0 0 3px rgba(26,77,58,0.08); background: #fff; }
+    textarea.form-input { resize: vertical; min-height: 80px; }
+
+    /* Status pipeline */
+    .pipeline { display: flex; align-items: center; gap: 0; margin: 20px 0 4px; }
+    .pipe-step {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative;
+    }
+    .pipe-step::before {
+      content: ''; position: absolute; top: 16px; left: -50%; right: 50%;
+      height: 2px; background: var(--border); z-index: 0;
+    }
+    .pipe-step:first-child::before { display: none; }
+    .pipe-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--border); background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; position: relative; z-index: 1;
+      transition: all 0.2s;
+    }
+    .pipe-dot.active { border-color: var(--g); background: var(--g); color: #fff; }
+    .pipe-dot.done { border-color: var(--delivered); background: var(--delivered); color: #fff; }
+    .pipe-label { font-size: 11px; font-weight: 500; color: var(--muted); text-align: center; }
+    .pipe-label.active { color: var(--g); font-weight: 600; }
+    .pipe-label.done { color: var(--delivered); }
+    .pipe-line { flex: 1; height: 2px; background: var(--border); margin-top: -26px; position: relative; z-index: 0; }
+    .pipe-line.done { background: var(--delivered); }
+
+    /* Status badge */
+    .sbadge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .s-approved { background: #d1fae5; color: #065f46; }
+    .s-ordered { background: #dbeafe; color: #1e40af; }
+    .s-dispatched { background: #fef3c7; color: #92400e; }
+    .s-delivered { background: #d1fae5; color: #065f46; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); padding: 10px 16px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody tr { cursor: pointer; transition: background 0.12s; }
+    tbody tr:hover { background: #f8fafc; }
+    tbody td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr.selected-row { background: #f0fdf4; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 8px; padding: 4px; }
+    .tab { padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--muted); border: none; background: none; cursor: pointer; transition: all 0.15s; }
+    .tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+    /* Note bubble */
+    .note-bubble { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text); line-height: 1.6; position: relative; }
+    .note-bubble .note-meta { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+    .note-bubble.shop-note { border-left: 3px solid var(--g); }
+
+    /* Stats row */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-mini { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+    .stat-mini-val { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--g); line-height: 1; }
+    .stat-mini-label { font-size: 11px; color: var(--muted); margin-top: 5px; letter-spacing: 0.3px; }
+
+    /* Detail drawer */
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; }
+    .drawer { position: fixed; right: 0; top: 0; bottom: 0; width: 460px; background: var(--surface); z-index: 101; box-shadow: -8px 0 32px rgba(0,0,0,0.12); overflow-y: auto; display: flex; flex-direction: column; animation: slideIn 0.22s ease; }
+    @keyframes slideIn { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .drawer-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--surface); z-index: 1; }
+    .drawer-body { padding: 24px; flex: 1; }
+
+    @media (max-width: 640px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .drawer { width: 100%; }
+    }
+
+    .fade-in { animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // ── Shared localStorage ───────────────────────────────────────────────────
+    const ls = {
+      get: (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch { return def; } },
+      set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+    };
+
+    const SEED_REQUESTS = [
+      { id: 1, type: 'book', name: 'Rahim Uddin', district: 'Rajshahi', phone: '+8801711234567', bookType: 'Book(s) for myself', books: 'Quran with Bengali translation, Tafsir Ibn Kathir', reason: 'I have been wanting to learn Tafsir for years', heard: 'Facebook', date: '2025-04-20', status: 'approved' },
+      { id: 2, type: 'book', name: 'Fatima Khatun', district: 'Dhaka', phone: '+8801811234568', bookType: 'Books for a school / library', books: 'Science books for class 6–8, Bengali literature', reason: 'Our school library has only 12 books for 300 students', heard: 'Mosque', date: '2025-04-19', status: 'approved' },
+      { id: 3, type: 'book', name: 'Abdul Karim', district: 'Chittagong', phone: '+8801911234569', bookType: 'Quran copy', books: 'Quran with transliteration', reason: 'My father passed away, I want to recite in his memory', heard: 'Friend / Family', date: '2025-04-18', status: 'approved' },
+      { id: 4, type: 'book', name: 'Nasrin Begum', district: 'Khulna', phone: '', bookType: 'Bulk donation for institution', books: 'Islamic books, children\'s Islamic stories', reason: 'Madrasa with 80 students, no library', heard: 'Facebook', date: '2025-04-17', status: 'approved' },
+      { id: 5, type: 'book', name: 'Sumaiya Islam', district: 'Sylhet', phone: '+8801711234572', bookType: 'Book(s) for myself', books: 'Seerah of the Prophet, Fiqh basics', reason: 'Recently became more practicing, want to learn', heard: 'Facebook', date: '2025-04-13', status: 'approved' },
+    ];
+
+    const STATUS_FLOW = ['approved', 'ordered', 'dispatched', 'delivered'];
+    const STATUS_META = {
+      approved:   { label: 'Approved',   icon: '✓',  color: '#10b981', desc: 'Request approved by admin. Ready to order.' },
+      ordered:    { label: 'Ordered',    icon: '🛒', color: '#2563eb', desc: 'Books have been ordered from supplier.' },
+      dispatched: { label: 'Dispatched', icon: '🚚', color: '#f59e0b', desc: 'Package is on the way to recipient.' },
+      delivered:  { label: 'Delivered',  icon: '✅', color: '#10b981', desc: 'Books delivered. Sadaqah complete!' },
+    };
+
+    const now = () => new Date().toISOString().slice(0, 16).replace('T', ' ');
+
+    // ── Login ─────────────────────────────────────────────────────────────────
+    function Login({ onLogin }) {
+      const [pw, setPw] = useState('');
+      const [err, setErr] = useState(false);
+      const submit = () => {
+        if (pw === 'shop123') { onLogin(); }
+        else { setErr(true); setTimeout(() => setErr(false), 1400); }
+      };
+      return (
+        <div className="login-wrap">
+          <div style={{ background: '#fff', borderRadius: 12, padding: '40px 44px', width: 360, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+            <div style={{ textAlign: 'center', marginBottom: 28 }}>
+              <div style={{ fontSize: 40, marginBottom: 10 }}>📦</div>
+              <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 20, fontWeight: 700 }}>Book Shop Portal</div>
+              <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>জ্ঞানের উপহার · Fulfillment Staff</div>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <label className="form-label">Staff Password</label>
+              <input type="password" className="form-input" placeholder="Enter password"
+                value={pw} onChange={e => setPw(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && submit()}
+                style={{ borderColor: err ? '#ef4444' : undefined }}
+                autoFocus />
+              {err && <div style={{ color: '#ef4444', fontSize: 12, marginTop: 5 }}>Incorrect password</div>}
+            </div>
+            <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '10px' }} onClick={submit}>Sign In →</button>
+            <div style={{ textAlign: 'center', marginTop: 14, fontSize: 11, color: 'var(--muted)' }}>Staff password: <code style={{ background: '#f3f4f6', padding: '2px 6px', borderRadius: 3 }}>shop123</code></div>
+          </div>
+        </div>
+      );
+    }
+
+    // ── Pipeline display ──────────────────────────────────────────────────────
+    function Pipeline({ current }) {
+      const steps = STATUS_FLOW;
+      const ci = steps.indexOf(current);
+      return (
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 0, margin: '16px 0 8px' }}>
+          {steps.map((s, i) => {
+            const isDone = i < ci;
+            const isActive = i === ci;
+            const meta = STATUS_META[s];
+            return (
+              <React.Fragment key={s}>
+                {i > 0 && (
+                  <div style={{ flex: 1, height: 2, background: isDone || isActive ? meta.color : 'var(--border)', marginTop: 15, transition: 'background 0.3s' }} />
+                )}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, minWidth: 60 }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: '50%',
+                    border: `2px solid ${isActive ? meta.color : isDone ? '#10b981' : 'var(--border)'}`,
+                    background: isActive ? meta.color : isDone ? '#10b981' : '#fff',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 13, color: isActive || isDone ? '#fff' : 'var(--muted)',
+                    transition: 'all 0.3s',
+                  }}>{isDone ? '✓' : meta.icon}</div>
+                  <div style={{
+                    fontSize: 10, fontWeight: isActive ? 700 : 500, textAlign: 'center',
+                    color: isActive ? meta.color : isDone ? '#10b981' : 'var(--muted)',
+                  }}>{meta.label}</div>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      );
+    }
+
+    // ── Request Detail Drawer ─────────────────────────────────────────────────
+    function DetailDrawer({ req, onClose, onUpdateDelivery }) {
+      const [noteText, setNoteText] = useState('');
+      const delivery = req.delivery || { status: req.status, notes: [], address: '' };
+      const ci = STATUS_FLOW.indexOf(delivery.status);
+      const canAdvance = ci < STATUS_FLOW.length - 1;
+      const nextStatus = canAdvance ? STATUS_FLOW[ci + 1] : null;
+
+      const addNote = () => {
+        if (!noteText.trim()) return;
+        const note = { text: noteText.trim(), date: now(), author: 'Shop Staff' };
+        onUpdateDelivery(req.id, { ...delivery, notes: [...(delivery.notes || []), note] });
+        setNoteText('');
+      };
+
+      const advance = () => {
+        if (!nextStatus) return;
+        const note = { text: `Status updated to "${STATUS_META[nextStatus].label}"`, date: now(), author: 'Shop Staff', auto: true };
+        onUpdateDelivery(req.id, { ...delivery, status: nextStatus, notes: [...(delivery.notes || []), note] });
+      };
+
+      const setAddress = (v) => onUpdateDelivery(req.id, { ...delivery, address: v });
+
+      return (
+        <>
+          <div className="drawer-overlay" onClick={onClose} />
+          <div className="drawer">
+            <div className="drawer-head">
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 16 }}>{req.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--muted)' }}>Request #{req.id} · {req.date}</div>
+              </div>
+              <button onClick={onClose} style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', color: 'var(--muted)' }}>✕ Close</button>
+            </div>
+
+            <div className="drawer-body">
+              {/* Recipient info — only what shop needs */}
+              <div style={{ background: '#f0fdf4', border: '1px solid #a7f3d0', borderRadius: 8, padding: 16, marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#065f46', letterSpacing: '0.8px', textTransform: 'uppercase', marginBottom: 10 }}>📋 Recipient Details</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  {[
+                    ['Name', req.name],
+                    ['District', req.district],
+                    ['Phone', req.phone || '—'],
+                    ['Request Type', req.bookType],
+                  ].map(([k, v]) => (
+                    <div key={k}>
+                      <div style={{ fontSize: 10, color: '#059669', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 2 }}>{k}</div>
+                      <div style={{ fontSize: 13, fontWeight: 500, color: '#1a2332' }}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 12 }}>
+                  <div style={{ fontSize: 10, color: '#059669', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 2 }}>Books Requested</div>
+                  <div style={{ fontSize: 13, color: '#1a2332', lineHeight: 1.6 }}>{req.books}</div>
+                </div>
+              </div>
+
+              {/* Delivery address */}
+              <div style={{ marginBottom: 20 }}>
+                <label className="form-label">Delivery Address <span style={{ color: 'var(--muted)', fontSize: 10 }}>(fill in full address)</span></label>
+                <textarea className="form-input" rows={2}
+                  value={delivery.address || ''}
+                  onChange={e => setAddress(e.target.value)}
+                  placeholder={`${req.district}, Bangladesh — add full address here`}
+                  style={{ minHeight: 60 }}
+                />
+              </div>
+
+              {/* Status pipeline */}
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>Fulfillment Status</div>
+                <Pipeline current={delivery.status} />
+                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>
+                  {STATUS_META[delivery.status]?.desc}
+                </div>
+                {canAdvance && (
+                  <button className="btn btn-primary" style={{ marginTop: 14, width: '100%', justifyContent: 'center' }} onClick={advance}>
+                    {STATUS_META[nextStatus].icon} Mark as "{STATUS_META[nextStatus].label}"
+                  </button>
+                )}
+                {!canAdvance && (
+                  <div style={{ marginTop: 14, background: '#d1fae5', border: '1px solid #a7f3d0', borderRadius: 6, padding: '10px 14px', fontSize: 13, color: '#065f46', textAlign: 'center' }}>
+                    ✅ This order has been fully delivered. Jazakallahu Khairan!
+                  </div>
+                )}
+              </div>
+
+              {/* Notes */}
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 12 }}>Notes & Updates</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14, maxHeight: 220, overflowY: 'auto' }}>
+                  {(delivery.notes || []).length === 0 && (
+                    <div style={{ fontSize: 12, color: 'var(--muted)', fontStyle: 'italic', padding: '8px 0' }}>No notes yet. Add one below.</div>
+                  )}
+                  {(delivery.notes || []).map((n, i) => (
+                    <div key={i} className="note-bubble shop-note" style={{ opacity: n.auto ? 0.7 : 1 }}>
+                      <div className="note-meta">{n.author} · {n.date}{n.auto ? ' · auto' : ''}</div>
+                      {n.text}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <textarea className="form-input" rows={2} placeholder="Add a note for this order… (visible to admin)" style={{ flex: 1, minHeight: 60 }}
+                    value={noteText} onChange={e => setNoteText(e.target.value)} />
+                </div>
+                <button className="btn btn-primary btn-sm" style={{ marginTop: 8, width: '100%', justifyContent: 'center' }} onClick={addNote}>
+                  💬 Add Note
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    // ── Main App ──────────────────────────────────────────────────────────────
+    function App() {
+      const [authed, setAuthed] = useState(() => ls.get('gk_shop_authed', false));
+      const [requests, setRequests] = useState(() => ls.get('gk_requests', SEED_REQUESTS));
+      const [deliveries, setDeliveries] = useState(() => ls.get('gk_deliveries', {}));
+      const [selected, setSelected] = useState(null);
+      const [tab, setTab] = useState('all');
+      const [search, setSearch] = useState('');
+
+      // Only show approved book requests
+      const approved = requests.filter(r => r.type === 'book' && r.status === 'approved');
+
+      // Merge delivery data
+      const withDelivery = approved.map(r => ({
+        ...r,
+        delivery: deliveries[r.id] || { status: 'approved', notes: [], address: '' },
+      }));
+
+      const filtered = withDelivery
+        .filter(r => {
+          if (tab === 'all') return true;
+          return (r.delivery?.status || 'approved') === tab;
+        })
+        .filter(r => !search || r.name.toLowerCase().includes(search.toLowerCase()) || r.district.toLowerCase().includes(search.toLowerCase()));
+
+      const updateDelivery = (id, data) => {
+        setDeliveries(prev => {
+          const next = { ...prev, [id]: data };
+          ls.set('gk_deliveries', next);
+          return next;
+        });
+        setSelected(prev => prev ? { ...prev, delivery: data } : null);
+      };
+
+      const counts = {
+        all: withDelivery.length,
+        approved: withDelivery.filter(r => (r.delivery?.status || 'approved') === 'approved').length,
+        ordered: withDelivery.filter(r => r.delivery?.status === 'ordered').length,
+        dispatched: withDelivery.filter(r => r.delivery?.status === 'dispatched').length,
+        delivered: withDelivery.filter(r => r.delivery?.status === 'delivered').length,
+      };
+
+      if (!authed) return <Login onLogin={() => { ls.set('gk_shop_authed', true); setAuthed(true); }} />;
+
+      const selectedReq = selected ? withDelivery.find(r => r.id === selected) : null;
+
+      return (
+        <div style={{ minHeight: '100vh' }}>
+          {/* Topbar */}
+          <div className="topbar">
+            <div style={{ width: 36, height: 36, background: 'var(--gold)', borderRadius: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontFamily: 'serif', color: 'var(--g)', fontWeight: 700, flexShrink: 0 }}>ج</div>
+            <div>
+              <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 15, fontWeight: 700 }}>Book Shop Portal</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', letterSpacing: '1px', textTransform: 'uppercase' }}>Fulfillment Staff · জ্ঞানের উপহার</div>
+            </div>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 10, alignItems: 'center' }}>
+              <a href="admin.html" target="_blank" style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: 4 }}>↗ Admin</a>
+              <button onClick={() => { ls.set('gk_shop_authed', false); setAuthed(false); }}
+                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', padding: '6px 12px', borderRadius: 6, fontSize: 12, cursor: 'pointer' }}>
+                Sign Out
+              </button>
+            </div>
+          </div>
+
+          <div className="content fade-in">
+            {/* Stats */}
+            <div className="stats-row">
+              {[
+                { label: 'Total Orders', val: counts.all, color: 'var(--g)', icon: '📦' },
+                { label: 'Pending Order', val: counts.approved, color: '#6366f1', icon: '🕐' },
+                { label: 'In Transit', val: counts.dispatched, color: '#f59e0b', icon: '🚚' },
+                { label: 'Delivered', val: counts.delivered, color: '#10b981', icon: '✅' },
+              ].map(s => (
+                <div key={s.label} className="stat-mini" style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 9, background: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>{s.icon}</div>
+                  <div>
+                    <div className="stat-mini-val" style={{ color: s.color }}>{s.val}</div>
+                    <div className="stat-mini-label">{s.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Filter row */}
+            <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+              <div className="tabs">
+                {[
+                  { id: 'all', label: `All (${counts.all})` },
+                  { id: 'approved', label: `To Order (${counts.approved})` },
+                  { id: 'ordered', label: `Ordered (${counts.ordered})` },
+                  { id: 'dispatched', label: `In Transit (${counts.dispatched})` },
+                  { id: 'delivered', label: `Delivered (${counts.delivered})` },
+                ].map(t => (
+                  <button key={t.id} className={`tab${tab === t.id ? ' active' : ''}`} onClick={() => setTab(t.id)}>{t.label}</button>
+                ))}
+              </div>
+              <input className="form-input" style={{ width: 200, marginLeft: 'auto' }}
+                placeholder="Search name / district…" value={search} onChange={e => setSearch(e.target.value)} />
+            </div>
+
+            {/* Table */}
+            <div className="card" style={{ padding: 0 }}>
+              <div className="table-wrap">
+                <table>
+                  <thead><tr>
+                    <th>#</th>
+                    <th>Recipient Name</th>
+                    <th>District</th>
+                    <th>Phone</th>
+                    <th>Books</th>
+                    <th>Request Date</th>
+                    <th>Delivery Status</th>
+                    <th>Notes</th>
+                  </tr></thead>
+                  <tbody>
+                    {filtered.length === 0 && (
+                      <tr><td colSpan={8} style={{ textAlign: 'center', padding: '36px', color: 'var(--muted)' }}>No requests in this category</td></tr>
+                    )}
+                    {filtered.map(r => {
+                      const ds = r.delivery?.status || 'approved';
+                      const meta = STATUS_META[ds];
+                      const noteCount = (r.delivery?.notes || []).length;
+                      return (
+                        <tr key={r.id} className={selected === r.id ? 'selected-row' : ''} onClick={() => setSelected(r.id)}>
+                          <td style={{ color: 'var(--muted)', fontSize: 12 }}>#{r.id}</td>
+                          <td style={{ fontWeight: 600 }}>{r.name}</td>
+                          <td style={{ color: 'var(--muted)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                              <span>📍</span>{r.district}
+                            </div>
+                          </td>
+                          <td style={{ fontFamily: 'monospace', fontSize: 12 }}>{r.phone || <span style={{ color: 'var(--muted)' }}>—</span>}</td>
+                          <td style={{ maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 12, color: 'var(--muted)' }}>{r.books}</td>
+                          <td style={{ fontSize: 12, color: 'var(--muted)' }}>{r.date}</td>
+                          <td>
+                            <span className="sbadge" style={{ background: `${meta.color}18`, color: meta.color }}>
+                              {meta.icon} {meta.label}
+                            </span>
+                          </td>
+                          <td>
+                            {noteCount > 0
+                              ? <span style={{ fontSize: 12, color: 'var(--g)', fontWeight: 600 }}>💬 {noteCount}</span>
+                              : <span style={{ fontSize: 11, color: 'var(--muted)' }}>—</span>}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Footer note */}
+            <div style={{ marginTop: 20, textAlign: 'center', fontSize: 12, color: 'var(--muted)' }}>
+              Click any row to open delivery details · All updates are visible to admin in real-time
+            </div>
+          </div>
+
+          {/* Detail Drawer */}
+          {selectedReq && (
+            <DetailDrawer
+              req={selectedReq}
+              onClose={() => setSelected(null)}
+              onUpdateDelivery={updateDelivery}
+            />
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

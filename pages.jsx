@@ -698,4 +698,93 @@ function ContactPage() {
   );
 }
 
-Object.assign(window, { HomePage, AboutPage, ProjectsPage, ApplyPage, ImpactPage, VolunteersPage, BlogPage, ContactPage, DUAS });
+// ─── PRIVACY POLICY PAGE ──────────────────────────────────────────────────────
+function PrivacyPage() {
+  return (
+    <div className="page-enter" style={{ paddingTop: 64 }}>
+      <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '64px 0 48px' }}>
+        <div className="container">
+          <div style={{ fontSize: 11, letterSpacing: '2px', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 12, fontWeight: 600 }}>Legal</div>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(28px,5vw,44px)', color: 'var(--green)', maxWidth: 560 }}>Privacy Policy</h1>
+          <div style={{ width: 48, height: 2, background: 'var(--gold)', marginTop: 20 }} />
+          <p style={{ color: 'var(--brown-light)', marginTop: 14, fontSize: 14 }}>Last updated: April 2025 · Effective immediately</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div className="container" style={{ maxWidth: 760 }}>
+          {/* Intro */}
+          <div style={{ background: 'rgba(26,77,58,0.04)', border: '1px solid var(--border)', borderLeft: '3px solid var(--gold)', borderRadius: 6, padding: '20px 24px', marginBottom: 40 }}>
+            <p style={{ fontSize: 15, color: 'var(--brown)', lineHeight: 1.8 }}>
+              জ্ঞানের উপহার (<em>Gift of Knowledge</em>) è un'iniziativa non commerciale gestita da volontari, fondata in Italia, che distribuisce libri e Corani in Bangladesh gratuitamente, per il bene di Allah. Questa politica spiega come raccogliamo, utilizziamo e proteggiamo i tuoi dati.
+            </p>
+          </div>
+
+          {[
+            {
+              n: '1', title: 'Chi siamo / Who we are',
+              body: `জ্ঞানের উপহার è un'iniziativa di beneficenza islamica (sadaqah jariyah) operante dall'Italia con attività in Bangladesh. Non siamo un'azienda registrata né un ente con fini di lucro. Tutto il lavoro è svolto volontariamente, li-llah.\n\nPer contatti: info@gyanerupohar.org`
+            },
+            {
+              n: '2', title: 'Dati che raccogliamo / Data we collect',
+              body: `Quando compili il modulo di richiesta libro o di volontariato, raccogliamo:\n\n• Nome completo\n• Distretto / indirizzo di consegna\n• Numero di telefono o WhatsApp (facoltativo)\n• Tipo di richiesta e titoli dei libri desiderati\n• Motivazione della richiesta\n• Come sei venuto a conoscenza di noi\n\nNon raccogliamo dati di pagamento (il servizio è gratuito), non utilizziamo cookie di profilazione, non installiamo tracker di terze parti.`
+            },
+            {
+              n: '3', title: 'Come utilizziamo i dati / How we use your data',
+              body: `I dati raccolti vengono utilizzati esclusivamente per:\n\n• Elaborare e consegnare la tua richiesta di libri\n• Coordinare i volontari per la distribuzione\n• Contattarti in merito allo stato della tua richiesta\n• Migliorare il nostro servizio (statistiche aggregate, senza identificazione personale)\n\nNon vendiamo, affittiamo né condividiamo i tuoi dati personali con terze parti a scopo commerciale.`
+            },
+            {
+              n: '4', title: 'Base giuridica / Legal basis',
+              body: `Il trattamento dei tuoi dati si basa sul tuo consenso esplicito, fornito al momento della compilazione del modulo, e sulla necessità di eseguire il servizio richiesto (consegna gratuita di libri). Ai sensi del GDPR (Regolamento UE 2016/679), hai il diritto di:\n\n• Accedere ai tuoi dati\n• Richiedere la rettifica o la cancellazione\n• Opporti al trattamento\n• Richiedere la portabilità dei dati\n\nPer esercitare questi diritti scrivi a: info@gyanerupohar.org`
+            },
+            {
+              n: '5', title: 'Conservazione dei dati / Data retention',
+              body: `I dati relativi alle richieste vengono conservati per il tempo necessario all'evasione della richiesta e per un massimo di 24 mesi successivi, al fine di gestire eventuali follow-up. Puoi richiedere la cancellazione anticipata in qualsiasi momento.`
+            },
+            {
+              n: '6', title: 'Sicurezza / Security',
+              body: `I dati sono conservati localmente nei sistemi dell'iniziativa e accessibili solo al personale autorizzato (admin e staff di distribuzione). Non utilizziamo database cloud pubblici. Adottiamo ragionevoli misure tecniche e organizzative per proteggere le informazioni.`
+            },
+            {
+              n: '7', title: 'Cookie e tecnologie di tracciamento',
+              body: `Questo sito web non utilizza cookie di profilazione né tracker pubblicitari. Nessun dato viene trasmesso a piattaforme di analytics di terze parti. L'unico dato conservato nel browser è lo stato della sessione (localStorage), che rimane sul tuo dispositivo e non viene trasmesso.`
+            },
+            {
+              n: '8', title: 'Minori / Minors',
+              body: `Il nostro servizio è aperto a tutti, inclusi studenti e famiglie. Non raccogliamo consapevolmente dati di minori di 13 anni senza il consenso di un genitore o tutore. Se ritieni che dati di un minore siano stati raccolti senza consenso, contattaci immediatamente.`
+            },
+            {
+              n: '9', title: 'Modifiche alla policy / Changes',
+              body: `Possiamo aggiornare questa policy di tanto in tanto. Le modifiche saranno pubblicate su questa pagina con la data di aggiornamento. L'uso continuato del sito dopo le modifiche costituisce accettazione della nuova policy.`
+            },
+            {
+              n: '10', title: 'Contatti / Contact',
+              body: `Per qualsiasi domanda relativa alla privacy:\n\nEmail: info@gyanerupohar.org\nFacebook: জ্ঞানের উপহার\nOperativa da: Italia · Attività in: Bangladesh`
+            },
+          ].map(s => (
+            <div key={s.n} style={{ marginBottom: 36, paddingBottom: 36, borderBottom: '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 28, fontWeight: 700, color: 'var(--gold)', lineHeight: 1, flexShrink: 0, width: 32 }}>{s.n}</div>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: 18, color: 'var(--green)', marginBottom: 12 }}>{s.title}</h3>
+                  {s.body.split('\n\n').map((para, i) => (
+                    <p key={i} style={{ fontSize: 14, color: 'var(--brown-light)', lineHeight: 1.85, marginBottom: 10, whiteSpace: 'pre-line' }}>{para}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* GDPR badge */}
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
+            {['GDPR Compliant', 'No Trackers', 'No Ads', 'Free Service', 'Amanah — آمانة'].map(b => (
+              <span key={b} style={{ background: 'rgba(26,77,58,0.07)', border: '1px solid var(--border)', color: 'var(--green)', padding: '5px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600 }}>{b}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+Object.assign(window, { HomePage, AboutPage, ProjectsPage, ApplyPage, ImpactPage, VolunteersPage, BlogPage, ContactPage, PrivacyPage, DUAS });

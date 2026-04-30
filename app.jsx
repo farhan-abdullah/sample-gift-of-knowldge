@@ -41,7 +41,7 @@ function App() {
 
   const toggle = () => setLang(l => l === 'en' ? 'bn' : 'en');
 
-  const pageMap = { home: HomePage, about: AboutPage, projects: ProjectsPage, apply: ApplyPage, impact: ImpactPage, volunteers: VolunteersPage, blog: BlogPage, contact: ContactPage };
+  const pageMap = { home: HomePage, about: AboutPage, projects: ProjectsPage, apply: ApplyPage, impact: ImpactPage, volunteers: VolunteersPage, blog: BlogPage, contact: ContactPage, privacy: PrivacyPage };
   const PageComponent = pageMap[page] || HomePage;
 
   // Apply CSS variable tweaks

@@ -6,8 +6,8 @@ const LangContext = createContext({ lang: 'en', toggle: () => {} });
 
 const T = {
   en: {
-    nav: ['Home', 'About', 'Projects', 'Apply', 'Impact', 'Volunteers', 'Blog', 'Contact'],
-    navKeys: ['home', 'about', 'projects', 'apply', 'impact', 'volunteers', 'blog', 'contact'],
+    nav: ['Home', 'About', 'Books', 'Apply', 'Impact', 'Stories', 'Blog', 'Contact'],
+    navKeys: ['home', 'about', 'books', 'apply', 'impact', 'stories', 'blog', 'contact'],
     langSwitch: 'বাংলা',
     hero: {
       eyebrow: 'Gift of Knowledge',
@@ -35,8 +35,8 @@ const T = {
     }
   },
   bn: {
-    nav: ['হোম', 'আমাদের সম্পর্কে', 'প্রকল্প', 'আবেদন করুন', 'প্রভাব', 'স্বেচ্ছাসেবক', 'ব্লগ', 'যোগাযোগ'],
-    navKeys: ['home', 'about', 'projects', 'apply', 'impact', 'volunteers', 'blog', 'contact'],
+    nav: ['হোম', 'আমাদের সম্পর্কে', 'বইসমূহ', 'আবেদন করুন', 'প্রভাব', 'গল্পসমূহ', 'ব্লগ', 'যোগাযোগ'],
+    navKeys: ['home', 'about', 'books', 'apply', 'impact', 'stories', 'blog', 'contact'],
     langSwitch: 'EN',
     hero: {
       eyebrow: 'Gift of Knowledge',
@@ -247,7 +247,7 @@ function Footer({ setPage }) {
           </div>
           <div>
             <div style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 600, fontSize: 12, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 16 }}>Pages</div>
-            {['home','about','projects','apply','impact','contact'].map((k, i) => (
+            {['home','about','books','apply','impact','stories','sdg','contact'].map((k, i) => (
               <button key={k} onClick={() => setPage(k)} style={{ display: 'block', background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', fontSize: 13, padding: '4px 0', cursor: 'pointer', textAlign: 'left', fontFamily: 'Inter,sans-serif' }}>{tx.nav[tx.navKeys.indexOf(k)]}</button>
             ))}
           </div>
@@ -274,7 +274,9 @@ function Footer({ setPage }) {
         </div>
         <div style={{ borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>{tx.footer.rights}</span>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Privacy Policy · No invasive trackers</span>
+          <button onClick={() => setPage('privacy')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'rgba(255,255,255,0.45)', fontFamily: 'Inter,sans-serif', textDecoration: 'underline' }}>Privacy Policy</button>
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>·</span>
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>No trackers · GDPR</span>
         </div>
       </div>
     </footer>

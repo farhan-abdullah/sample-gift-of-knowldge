@@ -1,175 +1,734 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>জ্ঞানের উপহার — Gift of Knowledge</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --green: #1a4d3a;
-      --green-mid: #21603f;
-      --green-light: #2e7d52;
-      --gold: #c9a84c;
-      --gold-light: #dbbe72;
-      --gold-pale: rgba(201,168,76,0.15);
-      --cream: #ffffff;
-      --cream-light: #ffffff;
-      --brown: #2e1a0a;
-      --brown-mid: #4a3520;
-      --brown-light: #7a6050;
-      --sage: #5a7a5a;
-      --teal: #4a9e9e;
-      --border: rgba(201,168,76,0.25);
-      --shadow: 0 4px 24px rgba(26,77,58,0.08);
-    }
-
-    :root { --pattern-display: none; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--cream-light);
-      color: var(--brown);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--cream); }
-    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
-
-    /* Typography */
-    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
-    .bn, .bn * { font-family: 'Hind Siliguri', sans-serif; line-height: 1.8; }
-    .ar { font-family: 'Amiri', serif; direction: rtl; unicode-bidi: bidi-override; }
-    .serif { font-family: 'Playfair Display', serif; }
-
-    /* Layout */
-    .container { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
-    .section { padding: 88px 0; }
-    .section-sm { padding: 56px 0; }
-
-    /* Gold divider */
-    .gold-line { width: 48px; height: 2px; background: var(--gold); }
-    .gold-line-c { width: 48px; height: 2px; background: var(--gold); margin: 0 auto; }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 30px; border-radius: 3px; font-size: 14px; font-weight: 500;
-      cursor: pointer; border: none; text-decoration: none;
-      transition: all 0.22s ease; font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
-    }
-    .btn-gold { background: var(--gold); color: var(--brown); }
-    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.35); }
-    .btn-outline-w { background: transparent; border: 1.5px solid rgba(255,255,255,0.45); color: #fff; }
-    .btn-outline-w:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
-    .btn-green { background: var(--green); color: #fff; }
-    .btn-green:hover { background: var(--green-mid); transform: translateY(-1px); }
-    .btn-outline-g { background: transparent; border: 1.5px solid var(--green); color: var(--green); }
-    .btn-outline-g:hover { background: var(--green); color: #fff; }
-
-    /* Cards */
-    .card {
-      background: #fff; border-radius: 6px; padding: 36px;
-      box-shadow: var(--shadow); border: 1px solid var(--border);
-    }
-    .card-sm { padding: 24px; }
-
-    /* Grids */
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-
-    /* Form */
-    .form-group { margin-bottom: 22px; }
-    .form-label { display: block; margin-bottom: 7px; font-weight: 500; color: var(--brown-mid); font-size: 13px; letter-spacing: 0.4px; text-transform: uppercase; }
-    .form-input {
-      width: 100%; padding: 13px 16px;
-      border: 1.5px solid var(--border); border-radius: 4px;
-      font-size: 15px; font-family: 'Inter', sans-serif;
-      background: var(--cream-light); color: var(--brown);
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .form-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
-    .form-select { -webkit-appearance: none; appearance: none; cursor: pointer; }
-    textarea.form-input { resize: vertical; min-height: 110px; }
-
-    /* Page fade */
-    .page-enter { animation: pageFade 0.28s ease; }
-    @keyframes pageFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Stat number */
-    .stat-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: var(--green); line-height: 1; }
-    .stat-label { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--brown-light); margin-top: 6px; }
-
-    /* Arabic calligraphy */
-    .bismillah { font-family: 'Amiri', serif; font-size: 32px; color: var(--gold); direction: rtl; text-align: center; }
-    .arabic-sm { font-family: 'Amiri', serif; font-size: 22px; color: var(--gold); direction: rtl; }
-
-    /* SDG badge */
-    .sdg-badge {
-      display: inline-block; padding: 4px 12px; border-radius: 2px;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
-      background: var(--green); color: #fff;
-    }
-
-    /* Step indicator */
-    .steps { display: flex; align-items: center; gap: 8px; margin-bottom: 32px; }
-    .step-item { display: flex; align-items: center; gap: 8px; }
-    .step-circle {
-      width: 32px; height: 32px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 600; flex-shrink: 0;
-    }
-    .step-active { background: var(--gold); color: var(--brown); }
-    .step-done { background: var(--green); color: #fff; }
-    .step-inactive { background: var(--border); color: var(--brown-light); border: 1.5px solid var(--border); }
-    .step-line { flex: 1; height: 1px; background: var(--border); max-width: 40px; }
-
-    /* Tag pill */
-    .tag { display: inline-block; padding: 4px 12px; background: var(--gold-pale); color: var(--brown-mid); border-radius: 2px; font-size: 12px; font-weight: 500; letter-spacing: 0.3px; }
-
-    /* Success state */
-    .success-check { width: 72px; height: 72px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
-
-    /* Blog card image placeholder */
-    .img-placeholder {
-      width: 100%; aspect-ratio: 16/9; border-radius: 4px;
-      background: repeating-linear-gradient(
-        45deg, var(--cream), var(--cream) 8px, var(--border) 8px, var(--border) 9px
-      );
-      display: flex; align-items: center; justify-content: center;
-      font-family: monospace; font-size: 11px; color: var(--brown-light);
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .grid-3 { grid-template-columns: repeat(2, 1fr); }
-      .grid-4 { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .grid-3, .grid-2, .grid-4 { grid-template-columns: 1fr; }
-      .container { padding: 0 20px; }
-      .section { padding: 56px 0; }
-      .card { padding: 24px; }
-      .stat-num { font-size: 40px; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>জ্ঞানের উপহার · Gift of Knowledge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1a4d3a;--green-mid:#21603f;--green-light:#2e7d52;
+  --gold:#c9a84c;--gold-light:#dbbe72;--gold-pale:rgba(201,168,76,0.12);
+  --bg:#fff;--surface:#fff;--bg2:#f8faf6;
+  --brown:#2e1a0a;--brown-mid:#4a3520;--brown-light:#7a6050;
+  --border:rgba(26,77,58,0.12);--border-g:rgba(201,168,76,0.25);
+  --shadow:0 2px 16px rgba(26,77,58,0.07);--shadow-lg:0 8px 32px rgba(26,77,58,0.13);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#fff;color:var(--brown);line-height:1.65;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.2;color:var(--brown)}
+.bn{font-family:'Hind Siliguri',sans-serif;line-height:1.8}
+.ar{font-family:'Amiri',serif;direction:rtl;unicode-bidi:bidi-override}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+.container{max-width:1120px;margin:0 auto;padding:0 28px}
+.section{padding:80px 0}.section-sm{padding:52px 0}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .2s;letter-spacing:.2px}
+.btn-gold{background:var(--gold);color:var(--brown)}.btn-gold:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,168,76,.35)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--green-mid);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1.5px solid var(--green);color:var(--green)}.btn-outline:hover{background:var(--green);color:#fff}
+.btn-outline-w{background:transparent;border:1.5px solid rgba(255,255,255,.5);color:#fff}.btn-outline-w:hover{background:rgba(255,255,255,.1)}
+.btn-sm{padding:8px 18px;font-size:13px}
+.btn-lg{padding:14px 34px;font-size:15px}
+.card{background:#fff;border:1px solid var(--border);border-radius:6px;padding:28px;box-shadow:var(--shadow)}
+.card-sm{padding:18px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.form-group{margin-bottom:20px}
+.form-label{display:block;margin-bottom:6px;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--brown-mid)}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:4px;font-size:15px;background:#fff;color:var(--brown);transition:border-color .18s,box-shadow .18s}
+.form-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+select.form-input{appearance:none;-webkit-appearance:none;cursor:pointer}
+textarea.form-input{resize:vertical;min-height:100px}
+.fade{animation:fadeIn .25s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700}
+.gline{width:44px;height:2px;background:var(--gold)}
+.gline-c{width:44px;height:2px;background:var(--gold);margin:0 auto}
+.page-banner{background:#fff;border-bottom:1px solid var(--border);padding:64px 0 44px;margin-top:64px}
+.stat-big{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--green);line-height:1}
+.stat-lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--brown-light);margin-top:6px}
+.tag{display:inline-block;padding:3px 10px;background:var(--gold-pale);color:var(--brown-mid);border-radius:2px;font-size:11px;font-weight:600}
+.step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.step-a{background:var(--gold);color:var(--brown)}
+.step-d{background:var(--green);color:#fff}
+.step-i{background:#f0ede8;color:var(--brown-light)}
+.story-card{background:#fff;border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:6px;padding:24px}
+@media(max-width:900px){.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}.container{padding:0 16px}.section{padding:52px 0}.card{padding:20px}.stat-big{font-size:36px}}
+@media(max-width:860px){.desk-nav{display:none!important}}
+@media(min-width:861px){.mob-menu-btn{display:none!important}}
+</style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel" src="components.jsx"></script>
-  <script type="text/babel" src="pages.jsx"></script>
-  <script type="text/babel" src="app.jsx"></script>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useContext, createContext } = React;
+
+const LangCtx = createContext({ lang: 'en', toggle: () => {} });
+
+const TX = {
+  en: {
+    nav: ['Home','About','Books','Apply','Impact','Stories','Blog','Contact','Volunteers'],
+    navK: ['home','about','books','apply','impact','stories','blog','contact','volunteers'],
+    langBtn: 'বাংলা',
+    h1: 'জ্ঞানের উপহার', heroSub: 'One book · One mind · One change',
+    cta1: 'Request a Book', cta2: 'Browse Catalog',
+    sBooks: 'Books Donated', sDist: 'Districts Reached', sFam: 'Families Served',
+    missLabel: 'Our Mission', missH: 'Knowledge is the greatest sadaqah jariyah',
+    missP: 'জ্ঞানের উপহার distributes books and Qurans to individuals, schools, and libraries across Bangladesh — free of charge, for the sake of Allah. Founded in Italy, rooted in Bangladesh, driven by love of knowledge.',
+    duaLabel: "Receive a Du'a", duaBtn: "Gift me a du'a", duaNext: "Another du'a",
+    ftTag: 'Spreading knowledge for the sake of Allah, from Italy to Bangladesh.',
+    ftRights: '© 2026 জ্ঞানের উপহার · Gift of Knowledge',
+  },
+  bn: {
+    nav: ['হোম','আমাদের সম্পর্কে','বইসমূহ','আবেদন করুন','প্রভাব','গল্পসমূহ','ব্লগ','যোগাযোগ','স্বেচ্ছাসেবক'],
+    navK: ['home','about','books','apply','impact','stories','blog','contact','volunteers'],
+    langBtn: 'EN',
+    h1: 'জ্ঞানের উপহার', heroSub: 'একটি বই · একটি মন · একটি পরিবর্তন',
+    cta1: 'বই চাই', cta2: 'বই দেখুন',
+    sBooks: 'বই বিতরণ', sDist: 'জেলা পৌঁছেছি', sFam: 'পরিবার সেবা',
+    missLabel: 'আমাদের লক্ষ্য', missH: 'জ্ঞান হলো সর্বোত্তম সদকায়ে জারিয়া',
+    missP: 'জ্ঞানের উপহার বাংলাদেশজুড়ে ব্যক্তি, স্কুল ও পাঠাগারে বিনামূল্যে বই ও কোরআন বিতরণ করে।',
+    duaLabel: "আপনার জন্য দু'আ", duaBtn: "দু'আ পাঠান", duaNext: "আরেকটি দু'আ",
+    ftTag: 'আল্লাহর সন্তুষ্টির জন্য জ্ঞান ছড়িয়ে দিচ্ছি।',
+    ftRights: '© ২০২৬ জ্ঞানের উপহার',
+  }
+};
+
+const DUAS = [
+  {ar:'رَبِّ زِدْنِي عِلْمًا', tr:"Rabbi zidni 'ilma", en:'My Lord, increase me in knowledge.', src:'Quran 20:114'},
+  {ar:'اللَّهُمَّ انْفَعْنِي بِمَا علَّمْتَنِي', tr:"Allahumma infa'ni bima 'allamtani", en:'O Allah, benefit me with what You have taught me.', src:'Ibn Majah'},
+  {ar:'رَبِّ اشْرَحْ لِي صَدْرِي', tr:'Rabbi ishrah li sadri', en:'My Lord, expand my chest for me.', src:'Quran 20:25'},
+  {ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا', tr:"Allahumma inni as'aluka 'ilman nafi'an", en:'O Allah, I ask You for beneficial knowledge.', src:'Ibn Majah'},
+  {ar:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ', tr:"Hasbunallahu wa ni'mal wakil", en:'Allah is sufficient for us.', src:'Quran 3:173'},
+];
+
+const ls = { get:(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}}, set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}} };
+
+const BOOKS = [
+  {id:1,bn:'মহাগ্রন্থ আল-কোরআন',en:'The Noble Quran (Bengali)',author:'tr. Muhiuddin Khan',cat:'Quran',lang:'Bilingual',pages:604,stock:87,desc:'Complete Quran with Bengali translation and tafsir notes. Most requested item.',cover:'#1a4d3a'},
+  {id:2,bn:'আর-রাহীকুল মাখতূম',en:'The Sealed Nectar',author:'Safiur Rahman Mubarakpuri',cat:'Seerah',lang:'Bengali',pages:540,stock:31,desc:'Award-winning biography of the Prophet ﷺ. Essential for every Muslim.',cover:'#2e7d52'},
+  {id:3,bn:'রিয়াদুস সালেহীন',en:'Riyadh as-Saliheen',author:'Imam An-Nawawi',cat:'Hadith',lang:'Bilingual',pages:1200,stock:14,desc:'Gardens of the Righteous — authentic hadith on virtue and daily practice.',cover:'#1a4d3a'},
+  {id:4,bn:'নারীর ফরয ইলম',en:"Women's Essential Knowledge",author:'Sheikh Motiur Rahman',cat:'Women',lang:'Bengali',pages:224,stock:4,desc:'Essential Islamic knowledge every Muslim woman must know.',cover:'#c8637a'},
+  {id:5,bn:'হিসনুল মুসলিম',en:'Fortress of the Muslim',author:"Sa'eed al-Qahtani",cat:"Du'a",lang:'Bilingual',pages:220,stock:142,desc:'Daily duas from Quran and Sunnah — pocket-sized, authentically sourced.',cover:'#4a9e9e'},
+  {id:6,bn:'ফিকহুস সুন্নাহ',en:'Fiqh as-Sunnah',author:'Sayyid Sabiq',cat:'Fiqh',lang:'Bengali',pages:880,stock:5,desc:'Islamic jurisprudence from Quran and Sunnah.',cover:'#2e7d52'},
+  {id:7,bn:'লা তাহযান',en:"Don't Be Sad",author:'Aaidh al-Qarni',cat:'Self-Help',lang:'Bengali',pages:480,stock:53,desc:'Islamic perspectives on overcoming sadness and anxiety.',cover:'#c9a84c'},
+  {id:8,bn:'শিশুদের কুরআনের গল্প',en:"Children's Quran Stories",author:'Various',cat:'Children',lang:'Bilingual',pages:180,stock:67,desc:'Illustrated Quranic stories for ages 6–12.',cover:'#c9a84c'},
+  {id:9,bn:'সহীহ আল-বুখারী',en:'Sahih al-Bukhari (Selected)',author:'Imam Bukhari',cat:'Hadith',lang:'Bengali',pages:2400,stock:0,desc:'Selected authentic hadith from the most reliable collection.',cover:'#4a4840'},
+  {id:10,bn:'তোমার হৃদয় ফিরিয়ে নাও',en:'Reclaim Your Heart',author:'Yasmin Mogahed',cat:'Self-Help',lang:'Bengali',pages:210,stock:28,desc:'Placing God at the centre of your heart. Widely loved.',cover:'#5a7a5a'},
+  {id:11,bn:'কাসাসুল আম্বিয়া',en:'Stories of the Prophets',author:'Ibn Kathir',cat:'Seerah',lang:'Bengali',pages:720,stock:18,desc:'25 prophetic stories from Adam to Muhammad ﷺ.',cover:'#21603f'},
+  {id:12,bn:'আকীদা তাহাবীয়াহ',en:'Al-Aqeedah Al-Tahawiyyah',author:'Imam Al-Tahawi',cat:'Aqeedah',lang:'Bilingual',pages:280,stock:9,desc:'Foundational Sunni Islamic creed with Bengali commentary.',cover:'#1a4d3a'},
+];
+
+const STORIES = [
+  {id:1,persona:'University Student',district:'Sylhet',date:'March 2025',text:"I had been wanting to study Tafsir for two years but couldn't afford the books. The day my package arrived, I cried. May Allah reward everyone behind this initiative.",impact:'Started a reading group of 14 students'},
+  {id:2,persona:'School Librarian',district:'Mymensingh',date:'February 2025',text:"Our school had 12 books for 300 students. Now we have 80. The children gather around them like treasure. Our headmaster cried when the box arrived.",impact:'Access for 300+ students'},
+  {id:3,persona:'Mosque Imam',district:'Rangpur',date:'January 2025',text:"We received 40 Qurans for our madrasa students who had never owned one. JazakAllahu khairan. They read after every salah now.",impact:'40 Qurans for madrasa students'},
+  {id:4,persona:'Individual Recipient',district:'Chittagong',date:'April 2025',text:"My father passed away last Ramadan. I requested a Quran in his memory. I recite from it every night. Sadaqah jariyah for him, in sha Allah.",impact:"Reads nightly in father's memory"},
+  {id:5,persona:'University Student',district:'Khulna',date:'March 2025',text:"University was expensive. I sold my school books. You replaced them and added a Hisnul Muslim. I read a dua before every exam now.",impact:'Improved exam preparation'},
+  {id:6,persona:'Public Library',district:'Barisal',date:'February 2025',text:"Two visitors a day became fifteen after our new books arrived. Knowledge truly is contagious. Our community is reading again.",impact:'Library visits increased 7x'},
+];
+
+const BLOG_POSTS = [
+  {id:1,title:'Ramadan 1446: 80 Books Delivered Across Rajshahi',date:'April 2025',tag:'Update',excerpt:'This Ramadan we distributed 80 books and Qurans across 6 upazilas reaching families who had never owned a personal Quran.'},
+  {id:2,title:"How One Book Changed a Teacher's Classroom",date:'March 2025',tag:'Story',excerpt:'A primary school teacher in Mymensingh requested books for her students. Three months later, reading time is now the favourite part of the school day.'},
+  {id:3,title:'The Psychology of Reading: Why Books Heal',date:'February 2025',tag:'Knowledge',excerpt:'Research consistently shows that access to books in childhood is one of the strongest predictors of lifelong learning.'},
+  {id:4,title:'Community Library Opens in Khulna',date:'December 2024',tag:'Update',excerpt:'After months of planning, our first dedicated community library shelf opened in a mosque in Khulna with 60 books.'},
+  {id:5,title:'Year in Review: 2025 by the Numbers',date:'January 2026',tag:'Impact',excerpt:"Looking back at our first full year — the districts reached, the books gifted, and the lessons learned."},
+  {id:6,title:"A Student's Prayer Answered",date:'November 2024',tag:'Story',excerpt:"A university student wrote asking for books she couldn't afford. Within two weeks, she received a package that changed the course of her studies."},
+];
+
+const SDG_ITEMS = [
+  {num:4,title:'Quality Education',icon:'📚',color:'#C5192D',stat:'300+ students',desc:'Books and learning materials reaching schools, madrasas, and individual students.'},
+  {num:5,title:'Gender Equality',icon:'⚖️',color:'#FF3A21',stat:'47% female',desc:'Nearly half of all recipients are women and girls — a deliberate focus.'},
+  {num:10,title:'Reduced Inequalities',icon:'🤝',color:'#DD1367',stat:'12 districts',desc:'Reaching rural and underserved districts often overlooked by mainstream NGOs.'},
+  {num:16,title:'Peace & Strong Institutions',icon:'☮️',color:'#00689D',stat:'100% transparent',desc:'Open governance, audited operations, zero corruption.'},
+  {num:17,title:'Partnerships for Goals',icon:'🌐',color:'#19486A',stat:'8 partners',desc:'Local mosques, madrasas, libraries, and community leaders work with us.'},
+];
+
+const DISTRICTS = ['Dhaka','Chittagong','Rajshahi','Khulna','Barisal','Sylhet','Rangpur','Mymensingh','Comilla','Narayanganj','Bogura','Other'];
+const BOOK_CATS = ['All','Quran','Seerah','Hadith','Fiqh','Aqeedah','Women','Children','Self-Help',"Du'a",'Islamic History'];
+
+function AnimCounter({ target, suffix='' }) {
+  const [val, setVal] = useState(0);
+  const ref = useRef(null);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      obs.disconnect();
+      let cur = 0; const step = target / 60;
+      const tick = () => { cur += step; if (cur >= target) { setVal(target); return; } setVal(Math.floor(cur)); requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [target]);
+  return React.createElement('span', { ref }, val.toLocaleString() + suffix);
+}
+
+function Header({ page, setPage }) {
+  const { lang, toggle } = useContext(LangCtx);
+  const tx = TX[lang];
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  return (
+    React.createElement('nav', {
+      style: {
+        position:'fixed',top:0,left:0,right:0,zIndex:100,height:64,display:'flex',alignItems:'center',
+        background: scrolled ? 'rgba(26,77,58,0.97)' : 'rgba(26,77,58,0.92)',
+        backdropFilter:'blur(12px)',
+        borderBottom: scrolled ? '1px solid rgba(201,168,76,0.2)' : '1px solid transparent',
+        boxShadow: scrolled ? '0 2px 14px rgba(0,0,0,0.14)' : 'none',
+        transition:'all .25s',
+      }
+    },
+      React.createElement('div', { className:'container', style:{display:'flex',alignItems:'center',width:'100%'} },
+        React.createElement('div', {
+          onClick: () => setPage('home'),
+          style: {display:'flex',alignItems:'center',gap:10,cursor:'pointer',flexShrink:0,marginRight:18}
+        },
+          React.createElement('div', {style:{width:34,height:34,background:'var(--gold)',borderRadius:3,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Amiri,serif',fontSize:18,color:'var(--green)',fontWeight:700}}, 'ج'),
+          React.createElement('div', null,
+            React.createElement('div', {style:{color:'#fff',fontFamily:'Hind Siliguri,sans-serif',fontSize:13,fontWeight:700,lineHeight:1.1}}, 'জ্ঞানের উপহার'),
+            React.createElement('div', {style:{color:'rgba(255,255,255,0.38)',fontSize:9,letterSpacing:'1.5px',textTransform:'uppercase'}}, 'Gift of Knowledge')
+          )
+        ),
+        React.createElement('div', { className:'desk-nav', style:{display:'flex',alignItems:'center',gap:2,flex:1,flexWrap:'wrap'} },
+          tx.nav.map((n,i) => React.createElement('button', {
+            key:n, onClick:()=>setPage(tx.navK[i]),
+            style:{background:'none',border:'none',color:page===tx.navK[i]?'var(--gold)':'rgba(255,255,255,0.7)',fontSize:12.5,fontWeight:500,padding:'5px 9px',borderRadius:3,cursor:'pointer',fontFamily:lang==='bn'?'Hind Siliguri,sans-serif':'Inter,sans-serif',borderBottom:page===tx.navK[i]?'1.5px solid var(--gold)':'1.5px solid transparent',transition:'color .15s',whiteSpace:'nowrap'}
+          }, n))
+        ),
+        React.createElement('div', {style:{display:'flex',alignItems:'center',gap:10,marginLeft:'auto'}},
+          React.createElement('button', {onClick:toggle,style:{background:'rgba(201,168,76,0.18)',border:'1px solid rgba(201,168,76,0.4)',color:'var(--gold)',fontSize:12,padding:'4px 12px',borderRadius:3,cursor:'pointer',fontFamily:'Hind Siliguri,sans-serif',fontWeight:700}}, tx.langBtn),
+          React.createElement('button', {
+            className:'mob-menu-btn',
+            onClick:()=>setMobileOpen(m=>!m),
+            style:{background:'none',border:'none',color:'#fff',display:'flex',alignItems:'center',padding:8}
+          }, React.createElement('svg', {width:22,height:22,viewBox:'0 0 22 22',fill:'none'},
+            mobileOpen
+              ? React.createElement(React.Fragment, null,
+                  React.createElement('line',{x1:4,y1:4,x2:18,y2:18,stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'}),
+                  React.createElement('line',{x1:18,y1:4,x2:4,y2:18,stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'})
+                )
+              : React.createElement(React.Fragment, null,
+                  React.createElement('line',{x1:3,y1:6,x2:19,y2:6,stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'}),
+                  React.createElement('line',{x1:3,y1:11,x2:19,y2:11,stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'}),
+                  React.createElement('line',{x1:3,y1:16,x2:19,y2:16,stroke:'currentColor',strokeWidth:2,strokeLinecap:'round'})
+                )
+          ))
+        )
+      ),
+      mobileOpen && React.createElement('div', {style:{position:'absolute',top:64,left:0,right:0,background:'rgba(22,60,44,0.98)',padding:'12px 16px 20px',borderTop:'1px solid rgba(201,168,76,0.2)'}},
+        tx.nav.map((n,i) => React.createElement('button', {
+          key:n,
+          onClick:()=>{setPage(tx.navK[i]);setMobileOpen(false);},
+          style:{display:'block',width:'100%',textAlign:'left',background:'none',border:'none',color:'rgba(255,255,255,0.8)',fontSize:15,padding:'11px 4px',borderBottom:'1px solid rgba(201,168,76,0.1)',cursor:'pointer',fontFamily:lang==='bn'?'Hind Siliguri,sans-serif':'Inter,sans-serif'}
+        }, n))
+      )
+    )
+  );
+}
+
+function Footer({ setPage }) {
+  const { lang } = useContext(LangCtx);
+  const tx = TX[lang];
+  return (
+    React.createElement('footer', {style:{background:'var(--green)',color:'rgba(255,255,255,0.72)',padding:'52px 0 28px'}},
+      React.createElement('div', {className:'container'},
+        React.createElement('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:36,marginBottom:40}},
+          React.createElement('div', null,
+            React.createElement('div', {style:{fontFamily:'Playfair Display,serif',fontSize:20,color:'var(--gold)',fontWeight:700,marginBottom:10}}, 'জ্ঞানের উপহার'),
+            React.createElement('p', {style:{fontSize:13,lineHeight:1.7,maxWidth:200,color:'rgba(255,255,255,0.6)'}}, tx.ftTag),
+            React.createElement('div', {style:{marginTop:16,fontFamily:'Amiri,serif',fontSize:24,color:'var(--gold)',direction:'rtl'}}, 'اِقْرَأْ'),
+            React.createElement('div', {style:{fontSize:10,color:'rgba(255,255,255,0.35)',marginTop:2}}, '— Read / পড়ো')
+          ),
+          React.createElement('div', null,
+            React.createElement('div', {style:{fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'rgba(255,255,255,0.85)',marginBottom:14}}, 'Pages'),
+            [['home','Home'],['about','About'],['books','Books'],['apply','Apply'],['impact','Impact'],['stories','Stories'],['sdg','SDG Alignment']].map(([k,l]) =>
+              React.createElement('button', {
+                key:k, onClick:()=>setPage(k),
+                style:{display:'block',background:'none',border:'none',color:'rgba(255,255,255,0.55)',fontSize:13,padding:'4px 0',cursor:'pointer',textAlign:'left',fontFamily:'Inter,sans-serif'}
+              }, l)
+            )
+          ),
+          React.createElement('div', null,
+            React.createElement('div', {style:{fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'rgba(255,255,255,0.85)',marginBottom:14}}, 'Contact'),
+            React.createElement('p', {style:{fontSize:13,lineHeight:1.9,color:'rgba(255,255,255,0.55)'}},
+              React.createElement('a', {href:'#',style:{color:'var(--gold)'}}, 'Facebook: জ্ঞানের উপহার'), React.createElement('br'),
+              'info@gyanerupohar.org', React.createElement('br'),
+              React.createElement('span', {style:{fontSize:11,color:'rgba(255,255,255,0.35)'}}, 'Italy · Bangladesh')
+            )
+          ),
+          React.createElement('div', null,
+            React.createElement('div', {style:{fontSize:11,fontWeight:700,letterSpacing:'1.2px',textTransform:'uppercase',color:'rgba(255,255,255,0.85)',marginBottom:14}}, 'Legal'),
+            [['privacy','Privacy Policy'],['terms','Terms'],['impressum','Impressum']].map(([k,l]) =>
+              React.createElement('button', {
+                key:k, onClick:()=>setPage(k),
+                style:{display:'block',background:'none',border:'none',color:'rgba(255,255,255,0.45)',fontSize:12,padding:'4px 0',cursor:'pointer',textAlign:'left',fontFamily:'Inter,sans-serif',textDecoration:'underline'}
+              }, l)
+            ),
+            React.createElement('div', {style:{marginTop:14}},
+              ['SDG 4','SDG 5','SDG 10','SDG 16','SDG 17'].map(s =>
+                React.createElement('div', {key:s,style:{fontSize:11,color:'rgba(255,255,255,0.4)',padding:'2px 0'}}, s)
+              )
+            )
+          )
+        ),
+        React.createElement('div', {style:{borderTop:'1px solid rgba(201,168,76,0.15)',paddingTop:22,display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:10}},
+          React.createElement('span', {style:{fontSize:12,color:'rgba(255,255,255,0.3)'}}, tx.ftRights),
+          React.createElement('span', {style:{fontSize:12,color:'rgba(255,255,255,0.3)'}}, 'No trackers · No ads · GDPR compliant')
+        )
+      )
+    )
+  );
+}
+
+function SH({ label, heading, sub, center=false }) {
+  return React.createElement('div', {style:{textAlign:center?'center':'left',marginBottom:44}},
+    label && React.createElement('div', {style:{fontSize:10,letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',fontWeight:700,marginBottom:10}}, label),
+    React.createElement('h2', {style:{fontSize:'clamp(22px,4vw,34px)',color:'var(--brown)',maxWidth:center?560:520,margin:center?'0 auto 14px':'0 0 14px'}}, heading),
+    React.createElement('div', {className:center?'gline-c':'gline',style:{marginBottom:sub?18:0}}),
+    sub && React.createElement('p', {style:{fontSize:16,color:'var(--brown-light)',lineHeight:1.7,maxWidth:center?540:460,margin:center?'18px auto 0':'18px 0 0'}}, sub)
+  );
+}
+
+const BD_DIVS = [
+  {name:'Rangpur',x:82,y:44,reached:true},{name:'Mymensingh',x:148,y:100,reached:true},
+  {name:'Sylhet',x:218,y:80,reached:false},{name:'Rajshahi',x:52,y:140,reached:true},
+  {name:'Dhaka',x:152,y:150,reached:true},{name:'Khulna',x:72,y:228,reached:true},
+  {name:'Barisal',x:152,y:240,reached:false},{name:'Chittagong',x:230,y:205,reached:true},
+];
+
+function BDMap() {
+  const [hov,setHov] = useState(null);
+  const outline="M 68,8 L 92,5 L 132,18 L 172,12 L 212,32 L 252,58 L 268,102 L 272,148 L 258,185 L 235,220 L 215,268 L 188,290 L 158,300 L 126,285 L 100,258 L 82,232 L 68,212 L 48,198 L 28,168 L 32,132 L 42,98 L 52,62 L 68,8 Z";
+  return React.createElement('div', {style:{position:'relative'}},
+    React.createElement('svg', {viewBox:'0 0 300 310',style:{width:'100%',maxWidth:320,display:'block',margin:'0 auto'}},
+      React.createElement('path', {d:outline,fill:'rgba(26,77,58,0.07)',stroke:'var(--green)',strokeWidth:'1.5'}),
+      BD_DIVS.map(d => React.createElement('g', {key:d.name,onMouseEnter:()=>setHov(d.name),onMouseLeave:()=>setHov(null),style:{cursor:'pointer'}},
+        React.createElement('circle', {cx:d.x,cy:d.y,r:hov===d.name?13:8,fill:d.reached?'var(--green)':'#fff',stroke:d.reached?'var(--gold)':'var(--brown-light)',strokeWidth:'1.5',style:{transition:'r .2s'}}),
+        d.reached && React.createElement('circle', {cx:d.x,cy:d.y,r:14,fill:'none',stroke:'var(--gold)',strokeWidth:'1',opacity:'.4'}),
+        React.createElement('text', {x:d.x,y:d.y+22,textAnchor:'middle',fill:'var(--brown)',fontSize:'8',fontFamily:'Inter,sans-serif',fontWeight:'500'}, d.name)
+      ))
+    ),
+    React.createElement('div', {style:{display:'flex',gap:18,justifyContent:'center',marginTop:14}},
+      [['var(--green)','var(--gold)','Reached'],['#fff','var(--brown-light)','Planned']].map(([bg,bc,lbl])=>
+        React.createElement('div', {key:lbl,style:{display:'flex',alignItems:'center',gap:6,fontSize:12,color:'var(--brown-light)'}},
+          React.createElement('div', {style:{width:11,height:11,borderRadius:'50%',background:bg,border:'1.5px solid '+bc}}), lbl
+        )
+      )
+    )
+  );
+}
+
+function HomePage({ setPage }) {
+  const { lang } = useContext(LangCtx);
+  const tx = TX[lang];
+  const [dua, setDua] = useState(null);
+  const [duaIdx, setDuaIdx] = useState(0);
+  const nextDua = () => { const n=(duaIdx+1)%DUAS.length; setDuaIdx(n); setDua(DUAS[n]); };
+  return (
+    <div className="fade">
+      <section style={{minHeight:'100vh',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',paddingTop:64,borderBottom:'1px solid var(--border)'}}>
+        <div style={{textAlign:'center',padding:'60px 24px 80px',maxWidth:780}}>
+          <div style={{fontFamily:'Amiri,serif',fontSize:30,color:'var(--gold)',direction:'rtl',marginBottom:18,lineHeight:1.5}}>بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+          <div style={{fontSize:11,letterSpacing:'3px',textTransform:'uppercase',color:'var(--brown-light)',marginBottom:14}}>Gift of Knowledge · সদকায়ে জারিয়া</div>
+          <h1 style={{fontFamily:'Hind Siliguri,sans-serif',fontSize:'clamp(52px,9vw,96px)',color:'var(--green)',fontWeight:700,lineHeight:1,marginBottom:16}}>{tx.h1}</h1>
+          <div className="gline-c" style={{marginBottom:22}}/>
+          <p style={{fontSize:'clamp(16px,2.5vw,20px)',color:'var(--brown-light)',marginBottom:40,fontFamily:lang==='bn'?'Hind Siliguri,sans-serif':'Playfair Display,serif',fontStyle:lang==='en'?'italic':'normal'}}>{tx.heroSub}</p>
+          <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap'}}>
+            <button className="btn btn-gold btn-lg" onClick={()=>setPage('apply')}>{tx.cta1}</button>
+            <button className="btn btn-outline btn-lg" onClick={()=>setPage('books')}>{tx.cta2}</button>
+          </div>
+          <div style={{display:'flex',justifyContent:'center',gap:32,marginTop:52,paddingTop:36,borderTop:'1px solid var(--border)'}}>
+            {[[300,'+',tx.sBooks],[12,'',tx.sDist],[180,'+',tx.sFam]].map(([v,s,l])=>(
+              <div key={l} style={{textAlign:'center'}}>
+                <div className="stat-big"><AnimCounter target={v} suffix={s}/></div>
+                <div className="stat-lbl">{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section" style={{background:'#fff'}}>
+        <div className="container">
+          <div className="g2" style={{gap:64,alignItems:'center'}}>
+            <div>
+              <SH label={tx.missLabel} heading={tx.missH}/>
+              <p style={{fontSize:16,color:'var(--brown-light)',lineHeight:1.8,fontFamily:lang==='bn'?'Hind Siliguri,sans-serif':'Inter,sans-serif',marginBottom:28}}>{tx.missP}</p>
+              <button className="btn btn-green" onClick={()=>setPage('about')}>Our Story →</button>
+            </div>
+            <div style={{background:'var(--green)',borderRadius:6,padding:44,textAlign:'center'}}>
+              <div style={{fontFamily:'Amiri,serif',fontSize:34,color:'var(--gold)',direction:'rtl',lineHeight:1.5,marginBottom:16}}>اِقْرَأْ بِاسْمِ رَبِّكَ</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,0.6)',fontStyle:'italic',marginBottom:6}}>"Read in the name of your Lord"</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.35)'}}>Quran 96:1 — The first revelation</div>
+              <div style={{width:36,height:1,background:'var(--gold)',margin:'20px auto'}}/>
+              <p style={{fontSize:13,color:'rgba(255,255,255,0.5)',lineHeight:1.7}}>"The best of charity is when a Muslim man acquires knowledge and then shares it." <br/><span style={{fontSize:11,color:'rgba(255,255,255,0.3)'}}>— Ibn Majah</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="section" style={{background:'var(--bg2)',borderTop:'1px solid var(--border)'}}>
+        <div className="container">
+          <SH label="What We Do" heading="Our Initiatives" center={true}/>
+          <div className="g3">
+            {[{icon:'📖',t:'Book Distribution',d:'Free books sent to individuals across Bangladesh — students, scholars, and curious minds.'},{icon:'🕌',t:'Quran Gifting',d:'Bulk distribution of Qurans to mosques, madrasas, and families who cannot afford one.'},{icon:'📚',t:'Community Libraries',d:'Building small libraries in villages and schools — creating lasting knowledge infrastructure.'}].map(p=>(
+              <div key={p.t} className="card" style={{textAlign:'center'}}>
+                <div style={{fontSize:36,marginBottom:14}}>{p.icon}</div>
+                <h3 style={{fontFamily:'Playfair Display,serif',fontSize:18,color:'var(--green)',marginBottom:10}}>{p.t}</h3>
+                <p style={{fontSize:14,color:'var(--brown-light)',lineHeight:1.7}}>{p.d}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{textAlign:'center',marginTop:32}}>
+            <button className="btn btn-outline" onClick={()=>setPage('books')}>Browse Our Book Catalog</button>
+          </div>
+        </div>
+      </section>
+      <section className="section" style={{background:'#fff',borderTop:'1px solid var(--border)'}}>
+        <div className="container">
+          <SH label="Testimonials" heading="Stories from recipients" sub="Every book changes a life." center={true}/>
+          <div className="g3">
+            {STORIES.slice(0,3).map(s=>(
+              <div key={s.id} className="story-card">
+                <div style={{fontSize:11,color:'var(--gold)',fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',marginBottom:10}}>{s.persona} · {s.district}</div>
+                <p style={{fontSize:14,color:'var(--brown)',lineHeight:1.8,fontStyle:'italic',marginBottom:12}}>"{s.text}"</p>
+                <div style={{fontSize:12,color:'var(--green)',fontWeight:600}}>✦ {s.impact}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{textAlign:'center',marginTop:28}}><button className="btn btn-outline" onClick={()=>setPage('stories')}>Read All Stories →</button></div>
+        </div>
+      </section>
+      <section className="section" style={{background:'var(--green)'}}>
+        <div className="container" style={{maxWidth:680,textAlign:'center'}}>
+          <div style={{fontSize:10,letterSpacing:'2.5px',textTransform:'uppercase',color:'var(--gold)',fontWeight:700,marginBottom:10}}>{tx.duaLabel}</div>
+          <h2 style={{fontFamily:'Playfair Display,serif',fontSize:32,color:'#fff',marginBottom:8}}>Receive a du'a for your journey</h2>
+          <div className="gline-c" style={{marginBottom:28}}/>
+          {dua ? (
+            <div style={{background:'rgba(255,255,255,0.07)',border:'1px solid rgba(201,168,76,0.3)',borderRadius:8,padding:36,marginBottom:24}}>
+              <div style={{fontFamily:'Amiri,serif',fontSize:36,color:'var(--gold)',direction:'rtl',lineHeight:1.6,marginBottom:16}}>{dua.ar}</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,0.55)',fontStyle:'italic',marginBottom:8}}>{dua.tr}</div>
+              <div style={{fontSize:16,color:'rgba(255,255,255,0.9)',marginBottom:10}}>{dua.en}</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,0.35)'}}>{dua.src}</div>
+            </div>
+          ) : <div style={{marginBottom:24,padding:'28px 0',color:'rgba(255,255,255,0.4)',fontStyle:'italic'}}>Press the button to receive a du'a for your journey.</div>}
+          <button className="btn btn-gold" onClick={nextDua}>{dua?tx.duaNext:tx.duaBtn}</button>
+        </div>
+      </section>
+      <section className="section-sm" style={{background:'#fff',borderTop:'1px solid var(--border)'}}>
+        <div className="container" style={{textAlign:'center'}}>
+          <div style={{fontSize:10,letterSpacing:'2px',textTransform:'uppercase',color:'var(--brown-light)',marginBottom:14}}>Aligned with UN Sustainable Development Goals</div>
+          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
+            {SDG_ITEMS.map(s=><div key={s.num} style={{background:s.color,color:'#fff',padding:'7px 16px',borderRadius:3,fontSize:12,fontWeight:700}}>SDG {s.num} · {s.title}</div>)}
+          </div>
+        </div>
+      </section>
+      <section className="section" style={{background:'var(--bg2)',borderTop:'1px solid var(--border)'}}>
+        <div className="container">
+          <SH label="Blog & News" heading="Latest updates" center={true}/>
+          <div className="g3">
+            {BLOG_POSTS.slice(0,3).map(p=>(
+              <div key={p.id} className="card" style={{cursor:'pointer',transition:'transform .18s,box-shadow .18s'}} onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-3px)';e.currentTarget.style.boxShadow='var(--shadow-lg)'}} onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='var(--shadow)'}}>
+                <div style={{height:110,background:'repeating-linear-gradient(45deg,#f5f5f5,#f5f5f5 8px,rgba(0,0,0,0.07) 8px,rgba(0,0,0,0.07) 9px)',borderRadius:4,marginBottom:18,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:'var(--brown-light)'}}>[photo]</div>
+                <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:10}}>
+                  <span style={{background:'var(--gold-pale)',color:'var(--brown-mid)',padding:'2px 8px',borderRadius:2,fontSize:10,fontWeight:700}}>{p.tag}</span>
+                  <span style={{fontSize:11,color:'var(--brown-light)'}}>{p.date}</span>
+                </div>
+                <h3 style={{fontFamily:'Playfair Display,serif',fontSize:17,lineHeight:1.3,marginBottom:10}}>{p.title}</h3>
+                <p style={{fontSize:13,color:'var(--brown-light)',lineHeight:1.7}}>{p.excerpt}</p>
+                <div style={{marginTop:14,fontSize:13,color:'var(--green)',fontWeight:500}}>Read more →</div>
+              </div>
+            ))}
+          </div>
+          <div style={{textAlign:'center',marginTop:28}}><button className="btn btn-outline" onClick={()=>setPage('blog')}>View All Posts →</button></div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AboutPage() {
+  return (
+    <div className="fade">
+      <div className="page-banner">
+        <div className="container">
+          <div className="eyebrow" style={{marginBottom:10}}>About Us</div>
+          <h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:520}}>Our story, mission & vision</h1>
+          <div className="gline" style={{marginTop:18}}/>
+        </div>
+      </div>
+      <section className="section"><div className="container">
+        <div className="g2" style={{gap:60,alignItems:'start'}}>
+          <div>
+            <SH label="The Story" heading="Born from a love of knowledge"/>
+            <p style={{color:'var(--brown-light)',fontSize:15,lineHeight:1.85,marginBottom:18}}>জ্ঞানের উপহার began with a simple belief: every person deserves access to books — regardless of their economic condition. Founded by Farhan Abdullah from Italy, the initiative bridges the diaspora's care for Bangladesh with tangible, lasting action.</p>
+            <p style={{color:'var(--brown-light)',fontSize:15,lineHeight:1.85}}>What started as sending a few books to family in Bangladesh grew into a structured initiative reaching 12 districts, building community libraries, and distributing hundreds of Qurans.</p>
+          </div>
+          <div style={{display:'flex',flexDirection:'column',gap:18}}>
+            {[{icon:'🕌',l:'Mission',t:'To make knowledge accessible to every Muslim in Bangladesh — through books, Qurans, and libraries — for the sake of Allah.'},{icon:'🌙',l:'Vision',t:'A Bangladesh where no one is denied learning due to poverty, and where knowledge flows freely as a sadaqah jariyah.'},{icon:'✦',l:'Our Niyyat',t:'Everything we do is fillah — for Allah alone. No commercial interest. No ego. Only sincerity.'}].map(v=>(
+              <div key={v.l} className="card card-sm" style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+                <div style={{fontSize:22,flexShrink:0,marginTop:2}}>{v.icon}</div>
+                <div><div style={{fontWeight:700,color:'var(--green)',fontSize:13,marginBottom:6}}>{v.l}</div><p style={{fontSize:14,color:'var(--brown-light)',lineHeight:1.7}}>{v.t}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div></section>
+      <section className="section-sm" style={{background:'var(--bg2)',borderTop:'1px solid var(--border)'}}><div className="container" style={{maxWidth:680}}>
+        <SH label="Founder" heading="Farhan Abdullah" center={true}/>
+        <div className="card" style={{textAlign:'center'}}>
+          <div style={{width:68,height:68,background:'var(--gold-pale)',border:'2px solid var(--gold)',borderRadius:'50%',margin:'0 auto 18px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,fontFamily:'Amiri,serif',color:'var(--green)'}}>ف</div>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:22,marginBottom:5}}>Farhan Abdullah</h3>
+          <div style={{fontSize:12,color:'var(--brown-light)',letterSpacing:'1px',textTransform:'uppercase',marginBottom:18}}>Founder · Marghera, Venezia, Italy</div>
+          <p style={{fontSize:15,color:'var(--brown-light)',lineHeight:1.8,maxWidth:480,margin:'0 auto'}}>A Bangladeshi living in Italy, Farhan founded this initiative out of a deep desire to give back through the most enduring form of charity: knowledge. His work proves that diaspora love, when channelled with sincerity, can transform communities.</p>
+        </div>
+      </div></section>
+      <section className="section" style={{borderTop:'1px solid var(--border)'}}><div className="container">
+        <SH label="Values" heading="What guides us" center={true}/>
+        <div className="g4">
+          {['Sincerity (Ikhlas)','Trust (Amanah)','Knowledge (Ilm)','Community (Ummah)'].map(v=>(
+            <div key={v} style={{textAlign:'center',padding:'22px 14px',border:'1px solid var(--border)',borderRadius:6,background:'#fff'}}>
+              <div style={{width:36,height:2,background:'var(--gold)',margin:'0 auto 14px'}}/>
+              <div style={{fontSize:14,fontWeight:600,color:'var(--green)'}}>{v}</div>
+            </div>
+          ))}
+        </div>
+      </div></section>
+    </div>
+  );
+}
+
+function BooksPage({ setPage }) {
+  const [cat, setCat] = useState('All');
+  const [langF, setLangF] = useState('All');
+  const [avail, setAvail] = useState('All');
+  const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState(null);
+  const books = ls.get('gk_books', BOOKS);
+  const filtered = books.filter(b=>
+    (cat==='All'||b.cat===cat)&&
+    (langF==='All'||b.lang===langF)&&
+    (avail==='All'||(avail==='In Stock'?b.stock>0:b.stock===0))&&
+    (!search||b.bn.includes(search)||b.en.toLowerCase().includes(search.toLowerCase())||b.author.toLowerCase().includes(search.toLowerCase()))
+  );
+  const avB = s=>s>5?{l:'In Stock',bg:'#d1fae5',c:'#065f46'}:s>0?{l:'Low Stock',bg:'#fef3c7',c:'#92400e'}:{l:'Out of Stock',bg:'#fee2e2',c:'#991b1b'};
+  if(selected){const b=selected;const av=avB(b.stock);return(
+    <div className="fade"><div className="page-banner"><div className="container">
+      <button onClick={()=>setSelected(null)} style={{background:'none',border:'none',color:'var(--gold)',fontSize:13,fontWeight:600,cursor:'pointer',marginBottom:16}}>← Back to Catalog</button>
+      <div style={{display:'grid',gridTemplateColumns:'180px 1fr',gap:40,alignItems:'start'}}>
+        <div>
+          <div style={{background:b.cover,borderRadius:'4px 6px 6px 4px',height:240,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Amiri,serif',fontSize:32,color:'rgba(255,255,255,0.4)',boxShadow:'4px 4px 12px rgba(0,0,0,0.18)'}}>ج</div>
+          <div style={{marginTop:14,padding:'10px 14px',background:b.stock>0?'#f0fdf4':'#fef2f2',border:'1px solid '+(b.stock>0?'#a7f3d0':'#fecaca'),borderRadius:5,fontSize:12,fontWeight:600,color:b.stock>0?'#065f46':'#991b1b'}}>{av.l}{b.stock>0?' · '+b.stock+' copies':''}</div>
+        </div>
+        <div>
+          <div className="eyebrow" style={{marginBottom:8}}>{b.cat} · {b.lang}</div>
+          <h1 style={{fontFamily:'Hind Siliguri,sans-serif',fontSize:'clamp(22px,4vw,36px)',color:'var(--green)',marginBottom:6}}>{b.bn}</h1>
+          <h2 style={{fontFamily:'Playfair Display,serif',fontSize:20,color:'var(--brown-light)',fontWeight:400,marginBottom:14}}>{b.en}</h2>
+          <div style={{color:'var(--brown-light)',fontSize:14,marginBottom:20,fontStyle:'italic'}}>by {b.author} · {b.pages} pages</div>
+          <div className="gline" style={{marginBottom:20}}/>
+          <p style={{fontSize:16,color:'var(--brown-light)',lineHeight:1.8,marginBottom:26}}>{b.desc}</p>
+          {b.stock>0?<button className="btn btn-gold btn-lg" onClick={()=>setPage('apply')}>Request This Book →</button>:<p style={{fontSize:14,color:'#991b1b',fontStyle:'italic'}}>Currently out of stock — request anyway and we'll source it.</p>}
+        </div>
+      </div>
+    </div></div></div>
+  );}
+  return(
+    <div className="fade"><div className="page-banner"><div className="container">
+      <div className="eyebrow" style={{marginBottom:10}}>Catalog</div>
+      <h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:580}}>Books available to request</h1>
+      <div className="gline" style={{marginTop:16}}/>
+      <p style={{color:'var(--brown-light)',marginTop:14,fontSize:15,maxWidth:500}}>Every book can be requested free of charge. Browse and find what calls to your heart.</p>
+    </div></div>
+    <section className="section"><div className="container">
+      <div style={{display:'flex',gap:12,flexWrap:'wrap',alignItems:'center',marginBottom:28,padding:'18px 20px',background:'#fafaf6',borderRadius:6,border:'1px solid var(--border)'}}>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search title or author…" className="form-input" style={{flex:'1 1 200px',maxWidth:260}}/>
+        <select value={cat} onChange={e=>setCat(e.target.value)} className="form-input" style={{width:'auto'}}>{BOOK_CATS.map(c=><option key={c}>{c}</option>)}</select>
+        <select value={langF} onChange={e=>setLangF(e.target.value)} className="form-input" style={{width:'auto'}}>
+          {['All','Bengali','Bilingual','Arabic'].map(l=><option key={l}>{l}</option>)}
+        </select>
+        <select value={avail} onChange={e=>setAvail(e.target.value)} className="form-input" style={{width:'auto'}}>
+          {['All','In Stock','Out of Stock'].map(a=><option key={a}>{a}</option>)}
+        </select>
+        <div style={{marginLeft:'auto',fontSize:13,color:'var(--brown-light)'}}>{filtered.length} book{filtered.length!==1?'s':''}</div>
+      </div>
+      {filtered.length===0&&<div style={{textAlign:'center',padding:'48px 0',color:'var(--brown-light)',fontStyle:'italic'}}>No books match your filters.</div>}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(230px,1fr))',gap:22}}>
+        {filtered.map(b=>{const av=avB(b.stock);return(
+          <div key={b.id} onClick={()=>setSelected(b)} style={{background:'#fff',border:'1px solid var(--border)',borderRadius:6,overflow:'hidden',cursor:'pointer',transition:'transform .18s,box-shadow .18s',boxShadow:'var(--shadow)'}} onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-3px)';e.currentTarget.style.boxShadow='var(--shadow-lg)'}} onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='var(--shadow)'}}>
+            <div style={{height:160,background:'linear-gradient(135deg,'+b.cover+','+b.cover+'dd)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Amiri,serif',fontSize:28,color:'rgba(255,255,255,0.35)',position:'relative'}}>
+              ج
+              <div style={{position:'absolute',top:10,right:10,background:av.bg,color:av.c,fontSize:10,fontWeight:700,padding:'2px 8px',borderRadius:10}}>{av.l}</div>
+            </div>
+            <div style={{padding:'16px 18px 18px'}}>
+              <div style={{fontSize:10,color:'var(--gold)',fontWeight:700,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:5}}>{b.cat}</div>
+              <div style={{fontFamily:'Hind Siliguri,sans-serif',fontSize:14,fontWeight:700,color:'var(--brown)',marginBottom:3,lineHeight:1.3}}>{b.bn}</div>
+              <div style={{fontSize:12,color:'var(--brown-light)',marginBottom:8}}>{b.en}</div>
+              <div style={{fontSize:11,color:'var(--brown-light)',marginBottom:14}}>by {b.author} · {b.pages}pp</div>
+              <button onClick={e=>{e.stopPropagation();if(b.stock>0)setPage('apply');}} style={{width:'100%',padding:'8px',background:b.stock>0?'var(--green)':'#e0e0e0',color:b.stock>0?'#fff':'var(--brown-light)',border:'none',borderRadius:3,fontSize:12,fontWeight:600,cursor:b.stock>0?'pointer':'default'}} disabled={b.stock===0}>
+                {b.stock>0?'Request This Book →':'Out of Stock'}
+              </button>
+            </div>
+          </div>
+        );})}
+      </div>
+    </div></section></div>
+  );
+}
+
+function ApplyPage() {
+  const [step,setStep]=useState(1);
+  const [form,setForm]=useState({name:'',district:'',phone:'',type:'',books:'',reason:'',heard:'',gender:'',consent:false});
+  const [done,setDone]=useState(false);
+  const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+  if(done)return(
+    <div className="fade" style={{paddingTop:64,minHeight:'80vh',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{textAlign:'center',maxWidth:480,padding:32}}>
+        <div style={{width:68,height:68,borderRadius:'50%',background:'var(--green)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px'}}>
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M5 15l7 7 13-13" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </div>
+        <div style={{fontFamily:'Amiri,serif',fontSize:26,color:'var(--gold)',direction:'rtl',marginBottom:14}}>جَزَاكَ اللَّهُ خَيْرًا</div>
+        <h2 style={{fontFamily:'Playfair Display,serif',fontSize:26,color:'var(--brown)',marginBottom:12}}>Jazakallahu Khairan!</h2>
+        <p style={{color:'var(--brown-light)',fontSize:15,lineHeight:1.7,marginBottom:20}}>Your request has been received. We review all applications with care and will contact you within 7–14 days, in sha Allah.</p>
+        <div style={{background:'var(--gold-pale)',border:'1px solid rgba(201,168,76,0.25)',borderRadius:4,padding:'14px 20px',fontSize:13,color:'var(--brown-mid)',lineHeight:1.6}}>Share this initiative — knowledge shared is sadaqah jariyah.</div>
+      </div>
+    </div>
+  );
+  const STEPS=['Your Details','Book Request','Review'];
+  return(
+    <div className="fade"><div className="page-banner"><div className="container">
+      <div className="eyebrow" style={{marginBottom:10}}>Apply</div>
+      <h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(26px,5vw,44px)',color:'var(--green)',maxWidth:540}}>Request a book — always free</h1>
+      <div className="gline" style={{marginTop:16}}/><p style={{color:'var(--brown-light)',marginTop:12,fontSize:15,maxWidth:420}}>All books are gifted as sadaqah. No payment, no obligation.</p>
+    </div></div>
+    <section className="section"><div className="container" style={{maxWidth:620}}>
+      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:28}}>
+        {STEPS.map((s,i)=>(
+          <React.Fragment key={s}>
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              <div className={'step-circle '+(i+1<step?'step-d':i+1===step?'step-a':'step-i')}>{i+1<step?'✓':i+1}</div>
+              <span style={{fontSize:13,color:i+1===step?'var(--brown)':'var(--brown-light)',fontWeight:i+1===step?600:400}}>{s}</span>
+            </div>
+            {i<STEPS.length-1&&<div style={{flex:1,height:1,background:'var(--border)',maxWidth:36}}/>}
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="card">
+        {step===1&&<div>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:20,marginBottom:22}}>Tell us about yourself</h3>
+          <div className="form-group"><label className="form-label">Full Name *</label><input className="form-input" value={form.name} onChange={e=>set('name',e.target.value)} placeholder="Your name"/></div>
+          <div className="form-group"><label className="form-label">District *</label><select className="form-input" value={form.district} onChange={e=>set('district',e.target.value)}><option value="">Select district...</option>{DISTRICTS.map(d=><option key={d}>{d}</option>)}</select></div>
+          <div className="form-group"><label className="form-label">Phone / WhatsApp</label><input className="form-input" value={form.phone} onChange={e=>set('phone',e.target.value)} placeholder="+880..."/></div>
+          <div className="form-group"><label className="form-label">Request Type *</label><select className="form-input" value={form.type} onChange={e=>set('type',e.target.value)}><option value="">Select...</option>{['Book(s) for myself','Books for a school / library','Quran copy','Bulk donation for institution'].map(o=><option key={o}>{o}</option>)}</select></div>
+          <div className="form-group"><label className="form-label">Gender</label><select className="form-input" value={form.gender} onChange={e=>set('gender',e.target.value)}><option value="">Prefer not to say</option>{['Male','Female','Other'].map(g=><option key={g}>{g}</option>)}</select></div>
+          <button className="btn btn-gold" style={{width:'100%',justifyContent:'center'}} onClick={()=>{if(form.name&&form.district&&form.type)setStep(2);}}>Continue →</button>
+        </div>}
+        {step===2&&<div>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:20,marginBottom:22}}>Tell us about the books</h3>
+          <div className="form-group"><label className="form-label">Which books are you looking for?</label><textarea className="form-input" value={form.books} onChange={e=>set('books',e.target.value)} placeholder="Titles, genres, or topics..."/></div>
+          <div className="form-group"><label className="form-label">Why do you want these books?</label><textarea className="form-input" value={form.reason} onChange={e=>set('reason',e.target.value)} placeholder="Share your story — we love to understand the person behind each request."/></div>
+          <div className="form-group"><label className="form-label">How did you hear about us?</label><select className="form-input" value={form.heard} onChange={e=>set('heard',e.target.value)}><option value="">Select...</option>{['Facebook','Friend / Family','Mosque','Other'].map(o=><option key={o}>{o}</option>)}</select></div>
+          <div style={{display:'flex',gap:10}}><button className="btn btn-outline" onClick={()=>setStep(1)}>← Back</button><button className="btn btn-gold" style={{flex:1,justifyContent:'center'}} onClick={()=>setStep(3)}>Review →</button></div>
+        </div>}
+        {step===3&&<div>
+          <h3 style={{fontFamily:'Playfair Display,serif',fontSize:20,marginBottom:22}}>Review your request</h3>
+          <div style={{background:'#fafaf6',border:'1px solid var(--border)',borderRadius:5,padding:20,marginBottom:20}}>
+            {[['Name',form.name],['District',form.district],['Phone',form.phone||'—'],['Type',form.type],['Books',form.books||'—'],['Reason',form.reason||'—']].map(([k,v])=>(
+              <div key={k} style={{display:'flex',gap:14,marginBottom:10,fontSize:14}}><div style={{color:'var(--brown-light)',width:100,flexShrink:0}}>{k}</div><div style={{fontWeight:500}}>{v}</div></div>
+            ))}
+          </div>
+          <div style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:20,padding:'12px 14px',background:'var(--gold-pale)',borderRadius:4,fontSize:13}}>
+            <input type="checkbox" checked={form.consent} onChange={e=>set('consent',e.target.checked)} style={{marginTop:2,accentColor:'var(--green)'}}/>
+            <span style={{color:'var(--brown-mid)',lineHeight:1.6}}>I consent to my information being used to fulfill this book request. آمانت.</span>
+          </div>
+          <div style={{display:'flex',gap:10}}>
+            <button className="btn btn-outline" onClick={()=>setStep(2)}>← Back</button>
+            <button className="btn btn-gold" style={{flex:1,justifyContent:'center'}} disabled={!form.consent} onClick={()=>{if(form.consent){const prev=ls.get('gk_requests',[]);ls.set('gk_requests',[...prev,{id:Date.now(),type:'book',name:form.name,district:form.district,phone:form.phone,bookType:form.type,books:form.books,reason:form.reason,heard:form.heard,gender:form.gender,date:new Date().toISOString().slice(0,10),status:'pending'}]);setDone(true);}}}>Submit Request ✓</button>
+          </div>
+        </div>}
+      </div>
+    </div></section></div>
+  );
+}
+
+function ImpactPage(){return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Impact</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:520}}>Every number is a life touched by knowledge</h1><div className="gline" style={{marginTop:16}}/></div></div>
+<section className="section-sm" style={{background:'var(--green)'}}><div className="container"><div className="g4">{[[300,'+','Books Donated','📖'],[12,'','Districts Reached','📍'],[180,'+','Families Served','🏠'],[3,'','Libraries Built','📚']].map(([v,s,l,i])=>(<div key={l} style={{textAlign:'center',padding:'20px 10px'}}><div style={{fontSize:28,marginBottom:8}}>{i}</div><div style={{fontFamily:'Playfair Display,serif',fontSize:44,fontWeight:700,color:'var(--gold)',lineHeight:1}}><AnimCounter target={v} suffix={s}/></div><div style={{fontSize:12,letterSpacing:'1px',textTransform:'uppercase',color:'rgba(255,255,255,0.55)',marginTop:6}}>{l}</div></div>))}</div></div></section>
+<section className="section"><div className="container"><div className="g2" style={{gap:60,alignItems:'start'}}><div><SH label="Reach" heading="Districts we have touched"/><BDMap/></div><div><SH label="Featured Story" heading="April 2025 — Rajshahi"/>
+<div className="story-card" style={{marginBottom:20}}><p style={{fontSize:15,color:'var(--brown)',lineHeight:1.85,fontStyle:'italic',marginBottom:14}}>"I had been wanting a Tafsir for two years but couldn't afford the books. The day the package arrived, I cried. May Allah reward everyone behind this initiative."</p><div style={{fontSize:13,color:'var(--brown-light)',fontWeight:500}}>— Recipient, Rajshahi (name withheld)</div></div>
+<SH label="UN Alignment" heading="SDG Progress"/>
+{SDG_ITEMS.map(s=>(<div key={s.num} style={{display:'flex',gap:14,alignItems:'flex-start',marginBottom:18}}><div style={{width:40,height:40,borderRadius:5,background:s.color,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',color:'#fff',flexShrink:0,fontSize:14}}>{s.icon}</div><div><div style={{fontWeight:700,fontSize:14,color:'var(--brown)',marginBottom:3}}>SDG {s.num} — {s.title}</div><div style={{fontSize:13,color:'var(--brown-light)',lineHeight:1.6}}>{s.stat} · {s.desc.slice(0,55)}…</div></div></div>))}
+</div></div></div></section></div>);}
+
+function StoriesPage(){const [filter,setFilter]=useState('All');const filters=['All','University Student','School Librarian','Mosque Imam','Individual Recipient','Public Library'];const shown=STORIES.filter(s=>filter==='All'||s.persona===filter);return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Testimonials</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:520}}>Stories from our recipients</h1><div className="gline" style={{marginTop:16}}/></div></div>
+<section className="section"><div className="container"><div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:28}}>{filters.map(f=>(<button key={f} onClick={()=>setFilter(f)} style={{padding:'7px 16px',borderRadius:20,fontSize:12,fontWeight:600,cursor:'pointer',border:'none',background:filter===f?'var(--green)':'#f0ede8',color:filter===f?'#fff':'var(--brown-light)',transition:'all .15s'}}>{f}</button>))}</div><div className="g3">{shown.map(s=>(<div key={s.id} style={{background:'#fff',border:'1px solid var(--border)',borderLeft:'3px solid var(--gold)',borderRadius:6,padding:26,boxShadow:'var(--shadow)'}}><div style={{fontSize:11,color:'var(--gold)',fontWeight:700,letterSpacing:'1px',textTransform:'uppercase',marginBottom:12}}>{s.persona} · {s.district} · {s.date}</div><p style={{fontSize:15,color:'var(--brown)',lineHeight:1.85,fontStyle:'italic',marginBottom:14}}>"{s.text}"</p><div style={{fontSize:12,color:'var(--green)',fontWeight:700}}>✦ {s.impact}</div></div>))}</div></div></section></div>);}
+
+function BlogPage(){return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Blog & News</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:520}}>Updates, stories & reflections</h1><div className="gline" style={{marginTop:16}}/></div></div>
+<section className="section"><div className="container"><div className="g3">{BLOG_POSTS.map(p=>(<div key={p.id} className="card" style={{cursor:'pointer',transition:'transform .18s,box-shadow .18s'}} onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-3px)';e.currentTarget.style.boxShadow='var(--shadow-lg)'}} onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='var(--shadow)'}}><div style={{height:110,background:'repeating-linear-gradient(45deg,#f5f5f5,#f5f5f5 8px,rgba(0,0,0,0.07) 8px,rgba(0,0,0,0.07) 9px)',borderRadius:4,marginBottom:18,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:'var(--brown-light)'}}>[photo]</div><div style={{display:'flex',gap:8,alignItems:'center',marginBottom:10}}><span style={{background:'var(--gold-pale)',color:'var(--brown-mid)',padding:'2px 8px',borderRadius:2,fontSize:10,fontWeight:700}}>{p.tag}</span><span style={{fontSize:11,color:'var(--brown-light)'}}>{p.date}</span></div><h3 style={{fontFamily:'Playfair Display,serif',fontSize:17,lineHeight:1.3,marginBottom:10}}>{p.title}</h3><p style={{fontSize:13,color:'var(--brown-light)',lineHeight:1.7}}>{p.excerpt}</p><div style={{marginTop:14,fontSize:13,color:'var(--green)',fontWeight:500}}>Read more →</div></div>))}</div></div></section></div>);}
+
+function ContactPage(){return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Contact</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:520}}>As-salamu alaikum — reach out</h1><div className="gline" style={{marginTop:16}}/></div></div>
+<section className="section"><div className="container" style={{maxWidth:760}}><div className="g3" style={{marginBottom:40}}>{[{icon:'📘',l:'Facebook',v:'জ্ঞানের উপহার',s:'Our primary channel',link:'#'},{icon:'✉️',l:'Email',v:'info@gyanerupohar.org',s:'For formal inquiries',link:'mailto:info@gyanerupohar.org'},{icon:'🌍',l:'Operated from',v:'Italy + Bangladesh',s:'Diaspora-led initiative',link:null}].map(c=>(<div key={c.l} className="card" style={{textAlign:'center'}}><div style={{fontSize:36,marginBottom:14}}>{c.icon}</div><div style={{fontSize:10,color:'var(--brown-light)',letterSpacing:'1px',textTransform:'uppercase',marginBottom:6}}>{c.l}</div>{c.link?<a href={c.link} style={{color:'var(--green)',fontWeight:700,fontSize:15}}>{c.v}</a>:<div style={{color:'var(--green)',fontWeight:700,fontSize:15}}>{c.v}</div>}<div style={{fontSize:12,color:'var(--brown-light)',marginTop:4}}>{c.s}</div></div>))}</div>
+<div style={{padding:'36px',background:'#fff',border:'1px solid var(--border)',borderRadius:6,textAlign:'center'}}><div style={{fontFamily:'Amiri,serif',fontSize:32,color:'var(--green)',direction:'rtl',marginBottom:14}}>وَعَلَيْكُمُ السَّلَامُ وَرَحْمَةُ اللَّهِ</div><div style={{color:'var(--brown-light)',fontSize:14,fontStyle:'italic'}}>Wa alaikum assalam wa rahmatullah</div><div style={{color:'var(--brown-light)',fontSize:12,marginTop:8}}>We respond to every message, in sha Allah. Allow 3–5 working days.</div></div>
+</div></section></div>);}
+
+function SDGPage(){return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>UN Sustainable Development Goals</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:560}}>Our SDG alignment & impact</h1><div className="gline" style={{marginTop:16}}/><p style={{color:'var(--brown-light)',marginTop:12,fontSize:15,maxWidth:520}}>Our alignment is structural — embedded in how we collect data, whom we serve, and how we report.</p></div></div>
+<section className="section"><div className="container"><div style={{display:'flex',flexDirection:'column',gap:28}}>{SDG_ITEMS.map(s=>(<div key={s.num} className="card" style={{display:'grid',gridTemplateColumns:'80px 1fr',gap:32,alignItems:'center'}}><div style={{width:80,height:80,borderRadius:8,background:s.color,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',color:'#fff',flexShrink:0}}><div style={{fontSize:28}}>{s.icon}</div><div style={{fontSize:11,fontWeight:700,marginTop:4}}>SDG {s.num}</div></div><div><h3 style={{fontFamily:'Playfair Display,serif',fontSize:20,color:'var(--brown)',marginBottom:8}}>{s.title}</h3><p style={{fontSize:15,color:'var(--brown-light)',lineHeight:1.75,marginBottom:10}}>{s.desc}</p><div style={{display:'inline-block',background:s.color+'22',color:s.color,padding:'4px 12px',borderRadius:2,fontSize:12,fontWeight:700,border:'1px solid '+s.color+'44'}}>Impact: {s.stat}</div></div></div>))}</div>
+<div style={{marginTop:48,background:'var(--green)',borderRadius:6,padding:'32px 40px',color:'rgba(255,255,255,0.85)'}}><div style={{fontFamily:'Playfair Display,serif',fontSize:22,color:'var(--gold)',marginBottom:12}}>Our methodology</div><p style={{fontSize:15,lineHeight:1.8}}>Every beneficiary record is enriched with attributes mapping directly to SDG indicators — occupation, gender, district, income bracket, and book category. We collect data at application, at 30-day follow-up, and at 6-month follow-up.</p></div>
+</div></section></div>);}
+
+function PrivacyPage(){const secs=[{n:'1',t:'Who We Are',b:'জ্ঞানের উপহার is a non-commercial volunteer initiative operating from Italy, distributing free books across Bangladesh. Contact: info@gyanerupohar.org'},{n:'2',t:'Data We Collect',b:'When you submit a book request or volunteer application we collect: full name, district, phone (optional), request type, books requested, and how you heard about us. No payment data, no passwords.'},{n:'3',t:'How We Use Your Data',b:'Data is used exclusively to process and deliver your book request, coordinate volunteers, contact you about your request status, and improve our service. We NEVER sell or share your data.'},{n:'4',t:'Legal Basis (GDPR)',b:'Data processing is based on your explicit consent. Under GDPR you have the right to access, rectify, delete, and port your data. Contact: info@gyanerupohar.org'},{n:'5',t:'Data Retention',b:'Request data is retained for up to 24 months after fulfillment. You may request deletion at any time.'},{n:'6',t:'No Cookies, No Trackers',b:'This website does not use advertising cookies or third-party trackers. Session state stored in localStorage stays on your device only.'},{n:'7',t:'Security',b:'Data is accessible only to authorised staff. We apply reasonable technical and organisational measures to protect information.'},{n:'8',t:'Contact',b:'Email: info@gyanerupohar.org — Facebook: জ্ঞানের উপহার — Italy'}];return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Legal</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(26px,5vw,44px)',color:'var(--green)',maxWidth:520}}>Privacy Policy</h1><div className="gline" style={{marginTop:16}}/><p style={{color:'var(--brown-light)',marginTop:12,fontSize:14}}>Last updated: April 2025</p></div></div>
+<section className="section"><div className="container" style={{maxWidth:740}}><div style={{background:'rgba(26,77,58,0.04)',border:'1px solid var(--border)',borderLeft:'3px solid var(--gold)',borderRadius:5,padding:'18px 24px',marginBottom:36}}><p style={{fontSize:15,color:'var(--brown)',lineHeight:1.8}}>This initiative is run fillah — for the sake of Allah alone. Data privacy is treated as amanat (a sacred trust).</p></div>
+{secs.map(s=>(<div key={s.n} style={{marginBottom:32,paddingBottom:32,borderBottom:'1px solid var(--border)'}}><div style={{display:'flex',gap:14,alignItems:'flex-start'}}><div style={{fontFamily:'Playfair Display,serif',fontSize:26,fontWeight:700,color:'var(--gold)',lineHeight:1,flexShrink:0,width:28}}>{s.n}</div><div><h3 style={{fontFamily:'Playfair Display,serif',fontSize:18,color:'var(--green)',marginBottom:10}}>{s.t}</h3><p style={{fontSize:14,color:'var(--brown-light)',lineHeight:1.85}}>{s.b}</p></div></div></div>))}
+<div style={{display:'flex',gap:10,flexWrap:'wrap',justifyContent:'center',marginTop:8}}>{['GDPR Compliant','No Trackers','No Ads','Free Service','آمانة — Amanah'].map(b=>(<span key={b} style={{background:'rgba(26,77,58,0.07)',border:'1px solid var(--border)',color:'var(--green)',padding:'5px 13px',borderRadius:20,fontSize:12,fontWeight:600}}>{b}</span>))}</div>
+</div></section></div>);}
+
+function TermsPage(){return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Legal</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(26px,5vw,44px)',color:'var(--green)',maxWidth:520}}>Terms of Use</h1><div className="gline" style={{marginTop:16}}/></div></div>
+<section className="section"><div className="container" style={{maxWidth:740}}>{[{t:'1. Nature of Service',b:'জ্ঞানের উপহার is a non-commercial, volunteer-run initiative. All books are gifted freely as sadaqah. We reserve the right to approve or decline any request without explanation.'},{t:'2. Eligibility',b:'The service is open to anyone in Bangladesh and to the Bangladeshi diaspora. Requests must be genuine — misrepresentation will result in disqualification.'},{t:'3. Availability',b:'Book availability is limited and not guaranteed. Approved requests are fulfilled on a best-effort basis.'},{t:'4. Prohibited Use',b:'This platform may not be used for commercial resale of gifted books, for fraudulent applications, or for any purpose contrary to Islamic values or applicable law.'},{t:'5. Governing Law',b:'These terms are governed by Italian law (the initiative is operated from Italy). Disputes are subject to the jurisdiction of the Venice courts.'},{t:'6. Contact',b:'Questions: info@gyanerupohar.org'}].map(s=>(<div key={s.t} style={{marginBottom:28,paddingBottom:28,borderBottom:'1px solid var(--border)'}}><h3 style={{fontFamily:'Playfair Display,serif',fontSize:18,color:'var(--green)',marginBottom:10}}>{s.t}</h3><p style={{fontSize:14,color:'var(--brown-light)',lineHeight:1.85}}>{s.b}</p></div>))}</div></section></div>);}
+
+function ImpressumPage(){return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Legal · EU Compliance</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(26px,5vw,44px)',color:'var(--green)',maxWidth:520}}>Impressum</h1><div className="gline" style={{marginTop:16}}/><p style={{color:'var(--brown-light)',marginTop:12,fontSize:14}}>Required identification per Italian law and EU Directive 2000/31/EC</p></div></div>
+<section className="section"><div className="container" style={{maxWidth:640}}><div className="card">{[['Initiative Name','জ্ঞানের উপহার — Gift of Knowledge'],['Nature','Non-commercial voluntary initiative'],['Operator','Farhan Abdullah'],['Address','Marghera, Venezia, Italy'],['Email','info@gyanerupohar.org'],['Facebook','জ্ঞানের উপহার (primary channel)'],['Operating region','Bangladesh (served), Italy (operated from)'],['NGO registration','Planned — currently personal initiative'],['VAT / Tax number','N/A — non-commercial']].map(([k,v])=>(<div key={k} style={{display:'grid',gridTemplateColumns:'200px 1fr',gap:16,marginBottom:18,paddingBottom:18,borderBottom:'1px solid var(--border)'}}><div style={{fontSize:12,fontWeight:700,color:'var(--brown-mid)'}}>{k}</div><div style={{fontSize:14,color:'var(--brown)',lineHeight:1.6}}>{v}</div></div>))}</div></div></section></div>);}
+
+function VolunteersPage(){const [sent,setSent]=useState(false);const [f,setF]=useState({name:'',location:'',skill:'',message:''});const set=(k,v)=>setF(p=>({...p,[k]:v}));return(<div className="fade"><div className="page-banner"><div className="container"><div className="eyebrow" style={{marginBottom:10}}>Join Us</div><h1 style={{fontFamily:'Playfair Display,serif',fontSize:'clamp(28px,5vw,46px)',color:'var(--green)',maxWidth:520}}>Become a volunteer</h1><div className="gline" style={{marginTop:16}}/></div></div>
+<section className="section"><div className="container"><div className="g2" style={{gap:60,alignItems:'start'}}><div><SH label="Roles" heading="How volunteers help"/>{[{n:'01',t:'Ground Distribution',d:'Help identify recipients and coordinate book delivery in your area.'},{n:'02',t:'Social Media & Content',d:'Create content, share our story on Facebook, and grow our reach.'},{n:'03',t:'Translation',d:'Translate content between Bengali, English, and Arabic.'},{n:'04',t:'Document Impact',d:'Photograph handoffs (with consent) and collect beneficiary stories.'}].map(r=>(<div key={r.n} style={{display:'flex',gap:16,alignItems:'flex-start',marginBottom:22}}><div style={{fontSize:26,fontFamily:'Playfair Display,serif',color:'var(--gold)',fontWeight:700,flexShrink:0,lineHeight:1,minWidth:32}}>{r.n}</div><div><div style={{fontWeight:700,color:'var(--brown)',marginBottom:4,fontSize:14}}>{r.t}</div><p style={{fontSize:14,color:'var(--brown-light)',lineHeight:1.6}}>{r.d}</p></div></div>))}</div>
+<div><SH label="Apply" heading="Volunteer application"/>{sent?(<div className="card" style={{textAlign:'center'}}><div style={{fontSize:40,marginBottom:16}}>🤲</div><h3 style={{fontFamily:'Playfair Display,serif',fontSize:22,marginBottom:10}}>Jazakallahu Khairan!</h3><p style={{color:'var(--brown-light)'}}>We'll be in touch soon, in sha Allah.</p></div>):(<div className="card"><div className="form-group"><label className="form-label">Your Name</label><input className="form-input" value={f.name} onChange={e=>set('name',e.target.value)} placeholder="Full name"/></div><div className="form-group"><label className="form-label">Your Location</label><input className="form-input" value={f.location} onChange={e=>set('location',e.target.value)} placeholder="City, Country"/></div><div className="form-group"><label className="form-label">How you can help</label><select className="form-input" value={f.skill} onChange={e=>set('skill',e.target.value)}><option value="">Select...</option>{['Ground distribution (Bangladesh)','Social media & content','Translation','Fundraising','Other'].map(o=><option key={o}>{o}</option>)}</select></div><div className="form-group"><label className="form-label">Message</label><textarea className="form-input" value={f.message} onChange={e=>set('message',e.target.value)} placeholder="Tell us about yourself..."/></div><button className="btn btn-gold" style={{width:'100%',justifyContent:'center'}} onClick={()=>{const prev=ls.get('gk_requests',[]);ls.set('gk_requests',[...prev,{id:Date.now(),type:'volunteer',name:f.name,location:f.location,skill:f.skill,message:f.message,date:new Date().toISOString().slice(0,10),status:'new'}]);setSent(true);}}>Submit Application</button></div>)}</div>
+</div></div></section></div>);}
+
+function App() {
+  const [lang, setLang] = useState(ls.get('gk_lang','en'));
+  const [page, setPage] = useState('home');
+  const toggle = () => { const n=lang==='en'?'bn':'en'; setLang(n); ls.set('gk_lang',n); };
+  useEffect(() => { window.scrollTo(0,0); }, [page]);
+  const goPage = (p) => setPage(p);
+  const pages = {
+    home:<HomePage setPage={goPage}/>, about:<AboutPage/>, books:<BooksPage setPage={goPage}/>,
+    apply:<ApplyPage/>, impact:<ImpactPage/>, stories:<StoriesPage/>, blog:<BlogPage/>,
+    contact:<ContactPage/>, sdg:<SDGPage/>, privacy:<PrivacyPage/>, terms:<TermsPage/>,
+    impressum:<ImpressumPage/>, volunteers:<VolunteersPage/>,
+  };
+  return (
+    <LangCtx.Provider value={{ lang, toggle }}>
+      <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
+        <Header page={page} setPage={goPage}/>
+        <main style={{flex:1}}>{pages[page]||pages.home}</main>
+        <Footer setPage={goPage}/>
+      </div>
+    </LangCtx.Provider>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+</script>
 </body>
 </html>
